@@ -33,19 +33,30 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>User</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Reason</th>
+                        <th>Name</th>
+                        <th>Active</th>
+                        <th>Created_at</th>
+                        <th>Updated_at</th>
+                        <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>183</td>
-                        <td>John Doe</td>
-                        <td>11-7-2014</td>
-                        <td><span class="tag tag-success">Approved</span></td>
-                        <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+                        @foreach($cities as $city)
+                        <tr>
+                            <td>{{ $city->id }}</td>
+                            <td>{{ $city->name }}</td>
+                            <td>
+                                @if($city->active)
+                                    <span class="badge bg-success">{{ $city->status }}</span>
+                                @else
+                                    <span class="badge bg-danger">{{ $city->status }}</span>
+                                @endif
+                            </td>
+                            <td>{{ $city->created_at }}</td>
+                            <td>{{ $city->updated_at }}</td>
+                            <td></td>
+                            {{-- <span class="badge bg-danger">55%</span> --}}
+                          @endforeach
                     </tbody>
                   </table>
                 </div>

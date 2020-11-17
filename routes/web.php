@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CityController;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\studentController;
@@ -25,4 +26,5 @@ Route::prefix('cms/admin')->group(function(){
     Route::view('dashboard', 'cms.dashboard')->name('dashboard');
     Route::view('/create', 'cms.Forms.general')->name('User.create');
     Route::view('cite', 'cms.Cities.index');
+    Route::resource('cities', CityController::class);
 });

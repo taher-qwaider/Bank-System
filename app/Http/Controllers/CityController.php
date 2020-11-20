@@ -39,14 +39,21 @@ class CityController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'name'=>'required|string|min:3|max:35',
+            'active'=>'in:on'
+        ],[
+            'name.required'=>'please, Enter a name',
+            'name.min'=>'city name must be at least 3 charchters'
+        ]);
         $city = new City();
-        $city->name=$request->name;
-
-        if($request->active)
-            $city->active=true;
-        else
-            $city->active=false;
-        $city->save();
+        $city->name=$request->get('name');
+        $city->active= $request->has('active')? true:false;
+        $isSaved = $city->save();
+        if ($isSaved) {
+            session()->flash('massege', 'City created successfuly');
+            return redirect()->route('cities.create');
+        }
     }
 
     /**
@@ -69,6 +76,8 @@ class CityController extends Controller
     public function edit($id)
     {
         //
+        $city = City::findOrFail($id);
+        return response()->view('cms.Cities.edit', ['city'=>$city]);
     }
 
     /**
@@ -81,6 +90,20 @@ class CityController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $request->validate([
+            'name'=>'string|max:35|min:3|required',
+            'active'=>'in:on'
+        ], [
+            'name.required'=>'please, Enter a name',
+            'name.min'=>'city name must be at least 3 charchters'
+        ]);
+        $city = City::findOrFail($id);
+        $city->name = $request->name;
+        $city->active = $request->has('active');
+        $isUpdated = $city->save();
+        if($isUpdated){
+            return redirect()->route('cities.index');
+        }
     }
 
     /**

@@ -235,13 +235,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('simple') }}" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Index</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('User.create') }}" class="nav-link">
+                <a href="#" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Create</p>
                 </a>
@@ -309,7 +309,7 @@
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">@yield('home-page')</a></li>
+              <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">@yield('home-page')</a></li>
               <li class="breadcrumb-item active">@yield('sub-page')</li>
             </ol>
           </div>

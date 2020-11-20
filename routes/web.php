@@ -22,9 +22,6 @@ Route::fallback(function(){
 
 // Route::resource('student', studentController::class);
 Route::prefix('cms/admin')->group(function(){
-    Route::view('', 'cms.Table.simple')->name('simple');
     Route::view('dashboard', 'cms.dashboard')->name('dashboard');
-    Route::view('/create', 'cms.Forms.general')->name('User.create');
-    Route::view('cite', 'cms.Cities.index');
     Route::resource('cities', CityController::class);
 });

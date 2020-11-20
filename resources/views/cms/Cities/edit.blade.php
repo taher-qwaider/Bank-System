@@ -1,5 +1,5 @@
 @extends('cms.parent')
-@section('title', 'Create City')
+@section('title', 'Edit City')
 
 @section('page-title', 'City')
 @section('home-page', 'Home')
@@ -27,26 +27,19 @@
                 </div>
             </div>
             @endif
-            @if (session()->has('massege'))
-            <div class="card-body">
-                <div class="alert alert-success alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                <h5><i class="far fa-check-circle"></i> {{ session('massege') }}</h5>
-                </div>
-            </div>
-            @endif
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" method="POST" action="{{ route('cities.store') }}">
+            <form role="form" method="POST" action="{{ route('cities.update', $city->id) }}">
                 @csrf
+                @method('PUT')
               <div class="card-body">
                 <div class="form-group">
                   <label for="cityName">Name</label>
-                  <input type="text" class="form-control" id="cityName" name="name" value="{{ old('name') }}" placeholder="Enter Name">
+                  <input type="text" class="form-control" id="cityName" name="name" value="{{ $city->name }}" placeholder="Enter Name">
                 </div>
                 <div class="form-group">
                     <div class="custom-control custom-switch">
-                      <input type="checkbox" class="custom-control-input" name="active" id="city-active" checked>
+                      <input type="checkbox" class="custom-control-input" name="active" id="city-active" @if($city->active) checked @endif>
                       <label class="custom-control-label" for="city-active">Active</label>
                     </div>
                   </div>

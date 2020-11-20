@@ -54,7 +54,16 @@
                             </td>
                             <td>{{ $city->created_at }}</td>
                             <td>{{ $city->updated_at }}</td>
-                            <td></td>
+                            <td>
+                                <div class="btn-group">
+                                <a href="{{ route('cities.edit', $city->id) }}" class="btn btn-info">
+                                    <i class="fas fa-edit"></i> Edit
+                                </a>
+                                <a href="" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
+                                </div>
+                            </td>
                             {{-- <span class="badge bg-danger">55%</span> --}}
                           @endforeach
                     </tbody>

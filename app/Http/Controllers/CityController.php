@@ -115,5 +115,11 @@ class CityController extends Controller
     public function destroy($id)
     {
         //
+        $IsDeleted = City::destroy($id);
+        if($IsDeleted){
+            return response()->json(['title'=>'Deleted!', 'massege'=>'City Deleted Successfuly', 'icon'=>'success'],200);
+        }else{
+            return response()->json(['title'=>'Failed!', 'massege'=>'Failed to delete the City', 'icon'=>'error'],400);
+        }
     }
 }

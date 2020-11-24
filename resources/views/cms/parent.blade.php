@@ -146,7 +146,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="../../index3.html" class="brand-link">
+    <a href="{{ route('dashboard') }}" class="brand-link">
       <img src="{{ asset('cms/dist/img/AdminLTELogo.png') }}"
            alt="AdminLTE Logo"
            class="brand-image img-circle elevation-3"
@@ -223,7 +223,29 @@
               </li>
             </ul>
           </li>
-
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Professions
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('Profession.index') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Index</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('Profession.create') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-header">Admins</li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
@@ -347,6 +369,9 @@
 <script src="{{ asset('cms/dist/js/adminlte.min.js') }}"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('cms/dist/js/demo.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
 @yield('scripts')
 </body>
 </html>

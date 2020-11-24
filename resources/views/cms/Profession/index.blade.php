@@ -1,10 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Cities')
+@section('title', 'Profession')
 
 
-@section('page-title', 'Cities')
+@section('page-title', 'Profession')
 @section('home-page', 'home')
-@section('sub-page', 'cite')
+@section('sub-page', 'Profession')
 
 @section('content')
     <!-- Main content -->
@@ -15,7 +15,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Users</h3>
+                  <h3 class="card-title">Professions</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -27,6 +27,14 @@
                     </div>
                   </div>
                 </div>
+                @if (session()->has('updataMassege'))
+                        <div class="card-body">
+                            <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                            <h5><i class="far fa-check-circle"></i> {{ session('updataMassege') }}</h5>
+                            </div>
+                        </div>
+                    @endif
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
                   <table class="table table-hover table-bordered text-nowrap">
@@ -37,38 +45,31 @@
                         <th>Active</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
-                        <th>Stings</th>
+                        <th>Settings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($cities as $city)
+                        @foreach($Professions as $Profession)
                         <tr>
-                            <td>{{ $city->id }}</td>
-                            <td>{{ $city->name }}</td>
+                            <td>{{ $Profession->id }}</td>
+                            <td>{{ $Profession->name }}</td>
                             <td>
-                                @if($city->active)
-                                    <span class="badge bg-success">{{ $city->status }}</span>
+                                @if($Profession->active)
+                                    <span class="badge bg-success">{{ $Profession->stutus }}</span>
                                 @else
-                                    <span class="badge bg-danger">{{ $city->status }}</span>
+                                    <span class="badge bg-danger">{{ $Profession->stutus }}</span>
                                 @endif
                             </td>
-                            <td>{{ $city->created_at }}</td>
-                            <td>{{ $city->updated_at }}</td>
+                            <td>{{ $Profession->created_at }}</td>
+                            <td>{{ $Profession->updated_at }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('cities.edit', $city->id) }}" class="btn btn-info">
+                                <a href="{{ route('Profession.edit', $Profession->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>
-                                <a href="#" onclick="preformedDelete({{ $city->id }}, this)" class="btn btn-danger">
+                                <a href="#" onclick="performDelete({{ $Profession->id }}, this)" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i> Delete
                                 </a>
-                                {{-- <form method="POST" action="{{ route('cities.destroy', $city->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </button>
-                                </form> --}}
                                 </div>
                             </td>
                             {{-- <span class="badge bg-danger">55%</span> --}}
@@ -86,13 +87,9 @@
       </section>
       <!-- /.content -->
 @endsection
-
 @section('scripts')
     <script>
-        function preformedDelete(id, refernce){
-            showAlert(id, refernce);
-        }
-        function showAlert(id, refernce){
+        function performDelete(id, referance){
             Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -103,16 +100,16 @@
             confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    destroy(id, refernce);
+                    destroy(id, referance);
                 }
             })
         }
-        function destroy(id, refernce){
-            axios.delete('/cms/admin/cities/'+id)
+        function destroy(id, referance){
+            axios.delete('/cms/admin/Profession/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);
-                refernce.closest('tr').remove();
+                referance.closest('tr').remove();
                 responsAlert(response.data);
             })
             .catch(function (error) {
@@ -122,11 +119,6 @@
             })
         }
         function responsAlert(data){
-            // Swal.fire(
-            //         data.title,
-            //         data.massege,
-            //         data.icon
-            //         )
             let timerInterval
             Swal.fire({
             title: data.title,
@@ -158,3 +150,4 @@
         }
     </script>
 @endsection
+

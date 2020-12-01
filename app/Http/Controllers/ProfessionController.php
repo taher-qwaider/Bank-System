@@ -14,8 +14,8 @@ class ProfessionController extends Controller
      */
     public function index()
     {
-        //
-        $Professions=Profession::all('*');
+        //paginate
+        $Professions=Profession::paginate(10);
         return response()->view('cms.Profession.index', ['Professions'=>$Professions]);
     }
 

@@ -78,6 +78,9 @@
                   </table>
                 </div>
                 <!-- /.card-body -->
+                <div class="card-footer clearfix">
+                    {{ $Professions->links() }}
+                </div>
               </div>
               <!-- /.card -->
             </div>
@@ -133,7 +136,7 @@
                 if (content) {
                     const b = content.querySelector('b')
                     if (b) {
-                    b.textContent = Swal.getTimerLeft()
+                        b.textContent = Swal.getTimerLeft()
                     }
                 }
                 }, 100)

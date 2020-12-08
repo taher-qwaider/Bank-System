@@ -15,7 +15,7 @@ class ProfessionController extends Controller
     public function index()
     {
         //paginate
-        $Professions=Profession::paginate(10);
+        $Professions=Profession::withCount('admins')->paginate(10);
         return response()->view('cms.Profession.index', ['Professions'=>$Professions]);
     }
 

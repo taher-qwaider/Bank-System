@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
+use App\Models\City;
+use App\Models\Profession;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use SebastianBergmann\Environment\Console;
 
 class AdminController extends Controller
 {
@@ -13,7 +18,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        //paginate
+        $admins=Admin::with(['city', 'profession'])->paginate(10);
+        return response()->view('cms.Admins.index', ['admins'=>$admins]);
     }
 
     /**
@@ -24,6 +31,9 @@ class AdminController extends Controller
     public function create()
     {
         //
+        $cities=City::where('active', true)->get();
+        $professions=Profession::where('active', true)->get();
+        return response()->view('cms.Admins.create', ['cities'=>$cities, 'professions'=>$professions]);
     }
 
     /**
@@ -35,6 +45,15 @@ class AdminController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator($request->all(), [
+            'first_name'=>'require|string|min:3'
+        ]);
+
+        if(!$validator->fails()){
+            return response()->json(['massege'=>'Admin Created successfuly'], 201);
+        }else{
+            return response()->json(['massege'=>$validator->getMessageBag()->first()], 400);
+        }
     }
 
     /**

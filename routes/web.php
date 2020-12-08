@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\ProfessionController;
@@ -26,4 +27,5 @@ Route::prefix('cms/admin')->group(function(){
     Route::view('dashboard', 'cms.dashboard')->name('dashboard');
     Route::resource('cities', CityController::class);
     Route::resource('Profession', ProfessionController::class);
+    Route::resource('admins', AdminController::class);
 });

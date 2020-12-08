@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\City;
 use Illuminate\Http\Request;
 
@@ -14,8 +15,8 @@ class CityController extends Controller
      */
     public function index()
     {
-        //
-        $cities = City::paginate(10);
+
+        $cities = City::withCount('admins')->paginate(10);
         return response()->view('cms.Cities.index', ['cities'=>$cities]);
     }
 

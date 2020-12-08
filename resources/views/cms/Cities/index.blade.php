@@ -35,6 +35,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Active</th>
+                        <th>Admins</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
@@ -52,13 +53,16 @@
                                     <span class="badge bg-danger">{{ $city->status }}</span>
                                 @endif
                             </td>
-                            <td>{{ $city->created_at }}</td>
-                            <td>{{ $city->updated_at }}</td>
+                            <td>
+                                <span class="badge bg-info">{{ $city->admins_count }} admin/s</span>
+                            </td>
+                            <td>{{ $city->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $city->updated_at->format('Y-m-d') }}</td>
                             <td>
                                 <div class="btn-group">
                                 <a href="{{ route('cities.edit', $city->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
-                                </a>
+                                </a>&nbsp;
                                 <a href="#" onclick="preformedDelete({{ $city->id }}, this)" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i> Delete
                                 </a>

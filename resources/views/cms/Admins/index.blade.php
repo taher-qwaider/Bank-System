@@ -1,10 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Profession')
+@section('title', 'Admins')
 
 
-@section('page-title', 'Profession')
+@section('page-title', 'Admins')
 @section('home-page', 'home')
-@section('sub-page', 'Profession')
+@section('sub-page', 'Admin')
 
 @section('content')
     <!-- Main content -->
@@ -15,7 +15,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Professions</h3>
+                  <h3 class="card-title">Admins</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -27,14 +27,6 @@
                     </div>
                   </div>
                 </div>
-                @if (session()->has('updataMassege'))
-                        <div class="card-body">
-                            <div class="alert alert-success alert-dismissible">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-                            <h5><i class="far fa-check-circle"></i> {{ session('updataMassege') }}</h5>
-                            </div>
-                        </div>
-                    @endif
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
                   <table class="table table-hover table-bordered text-nowrap">
@@ -42,46 +34,45 @@
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Active</th>
-                        <th>Admins</th>
+                        <th>email</th>
+                        <th>mobile</th>
+                        <th>Profession</th>
+                        <th>gender</th>
+                        <th>City</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
-                        <th>Settings</th>
+                        <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($Professions as $Profession)
+                        @foreach($admins as $admin)
                         <tr>
-                            <td>{{ $Profession->id }}</td>
-                            <td>{{ $Profession->name }}</td>
-                            <td>
-                                @if($Profession->active)
-                                    <span class="badge bg-success">{{ $Profession->stutus }}</span>
-                                @else
-                                    <span class="badge bg-danger">{{ $Profession->stutus }}</span>
-                                @endif
-                            </td>
-                            <td><span class="badge bg-info">{{ $Profession->admins_count }} admin/s</span></td>
-                            <td>{{ $Profession->created_at }}</td>
-                            <td>{{ $Profession->updated_at }}</td>
+                            <td>{{ $admin->id }}</td>
+                            <td>{{ $admin->fulName }}</td>
+                            <td>{{ $admin->email }}</td>
+                            <td>{{ $admin->mobile }}</td>
+                            <td>{{ $admin->profession->name }}</td>
+                            <td>{{ $admin->genderStatus }}</td>
+                            <td>{{ $admin->city->name }}</td>
+                            <td>{{ $admin->created_at }}</td>
+                            <td>{{ $admin->updated_at }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('Profession.edit', $Profession->id) }}" class="btn btn-info">
+                                <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>&nbsp;
-                                <a href="#" onclick="performDelete({{ $Profession->id }}, this)" class="btn btn-danger">
+                                <a href="#" onclick="preformedDelete({{ $admin->id }}, this)" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i> Delete
                                 </a>
                                 </div>
                             </td>
-                            {{-- <span class="badge bg-danger">55%</span> --}}
                           @endforeach
                     </tbody>
                   </table>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    {{ $Professions->links() }}
+                        {{ $admins->links() }}
                 </div>
               </div>
               <!-- /.card -->
@@ -92,9 +83,13 @@
       </section>
       <!-- /.content -->
 @endsection
+
 @section('scripts')
     <script>
-        function performDelete(id, referance){
+        function preformedDelete(id, refernce){
+            showAlert(id, refernce);
+        }
+        function showAlert(id, refernce){
             Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -105,16 +100,16 @@
             confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    destroy(id, referance);
+                    destroy(id, refernce);
                 }
             })
         }
-        function destroy(id, referance){
-            axios.delete('/cms/admin/Profession/'+id)
+        function destroy(id, refernce){
+            axios.delete('/cms/admin/cities/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);
-                referance.closest('tr').remove();
+                refernce.closest('tr').remove();
                 responsAlert(response.data);
             })
             .catch(function (error) {
@@ -124,6 +119,11 @@
             })
         }
         function responsAlert(data){
+            // Swal.fire(
+            //         data.title,
+            //         data.massege,
+            //         data.icon
+            //         )
             let timerInterval
             Swal.fire({
             title: data.title,
@@ -138,7 +138,7 @@
                 if (content) {
                     const b = content.querySelector('b')
                     if (b) {
-                        b.textContent = Swal.getTimerLeft()
+                    b.textContent = Swal.getTimerLeft()
                     }
                 }
                 }, 100)
@@ -155,4 +155,3 @@
         }
     </script>
 @endsection
-

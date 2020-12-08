@@ -15,4 +15,7 @@ class City extends Model
         else
             return "In Active";
     }
+    public function admins(){
+        return $this->hasMany(Admin::class, 'city_id', 'id');
+    }
 }

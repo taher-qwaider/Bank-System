@@ -23,6 +23,14 @@ class AdminFactory extends Factory
     {
         return [
             //
+            'first_name'=>$this->faker->firstName(),
+            'last_name'=>$this->faker->lastName(),
+            'email'=>$this->faker->unique()->email,
+            'mobile'=>$this->faker->unique()->randomNumber(),
+            'password'=>'password',
+            'gender'=>'m',
+            'city_id'=>$this->faker->numberBetween(1, 60),
+            'profession_id'=>$this->faker->numberBetween(1, 10)
         ];
     }
 }

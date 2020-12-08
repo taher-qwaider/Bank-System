@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\City;
+use App\Models\Profession;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -18,10 +20,15 @@ class CreateAdminsTable extends Migration
             $table->string('first_name', 45);
             $table->string('last_name', 45);
             $table->string('email', 45)->unique();
-            $table->string('mobile', 30);
-            $table->boolean('active')->default(1);
-            $table->foreignId('city_id');
-            $table->foreign('city_id')->references('cities')->on('id');
+            $table->string('mobile', 45)->unique();
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('password');
+            $table->enum('gender', ['M', 'F']);
+            $table->foreignIdFor(City::class);
+            $table->foreign('city_id')->on('cities')->references('id')->restrictOnDelete();
+            $table->foreignIdFor(Profession::class);
+            $table->foreign('profession_id')->on('professions')->references('id')->restrictOnDelete();
+            $table->rememberToken();
             $table->timestamps();
         });
     }
@@ -33,6 +40,6 @@ class CreateAdminsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('admins');
+        Schema::dropIfExists('_admins');
     }
 }

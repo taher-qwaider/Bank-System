@@ -5,6 +5,10 @@
 @section('page-title', 'Admins')
 @section('home-page', 'home')
 @section('sub-page', 'Admin')
+@section('styles')
+     <!-- Toastr -->
+     <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
+@endsection
 
 @section('content')
     <!-- Main content -->
@@ -85,6 +89,8 @@
 @endsection
 
 @section('scripts')
+    <!-- Toastr -->
+    <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
         function preformedDelete(id, refernce){
             showAlert(id, refernce);
@@ -105,53 +111,26 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/admin/cities/'+id)
+            axios.delete('/cms/admin/admins/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);
                 refernce.closest('tr').remove();
-                responsAlert(response.data);
+                responsAlert(response.data, true);
             })
             .catch(function (error) {
                 // handle error
                 console.log(error.response.data);
-                responsAlert(error.response.data);
+                responsAlert(error.response.data, false);
             })
         }
-        function responsAlert(data){
-            // Swal.fire(
-            //         data.title,
-            //         data.massege,
-            //         data.icon
-            //         )
-            let timerInterval
-            Swal.fire({
-            title: data.title,
-            text: data.massege,
-            icon: data.icon,
-            timer: 2000,
-            showConfirmButton: false,
-            willOpen: () => {
-                Swal.showLoading()
-                timerInterval = setInterval(() => {
-                const content = Swal.getContent()
-                if (content) {
-                    const b = content.querySelector('b')
-                    if (b) {
-                    b.textContent = Swal.getTimerLeft()
-                    }
-                }
-                }, 100)
-            },
-            willClose: () => {
-                clearInterval(timerInterval)
+        function responsAlert(data, status){
+            if(status){
+                toastr.success(data.massege);
+            }else{
+                toastr.error(data.massege);
             }
-            }).then((result) => {
-            /* Read more about handling dismissals below */
-            if (result.dismiss === Swal.DismissReason.timer) {
-                console.log('I was closed by the timer')
-            }
-            });
+
         }
     </script>
 @endsection

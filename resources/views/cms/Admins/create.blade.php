@@ -26,7 +26,7 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form>
+            <form id="create_admin">
                 @csrf
               <div class="card-body">
                 <div class="form-group">
@@ -115,11 +115,12 @@
         })
         .then(function (response) {
             console.log(response);
-            showConfirm(response.data.massege, true)
+            showConfirm(response.data.message, true);
+            document.getElementById('create_admin').reset();
         })
         .catch(function (error) {
             console.log(error);
-            showConfirm(error.response.data.massege, false)
+            showConfirm(error.response.data.message, false);
         });
         }
         function showConfirm(massege, status){

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\Controller;
@@ -23,9 +24,13 @@ Route::fallback(function(){
 });
 
 // Route::resource('student', studentController::class);
-Route::prefix('cms/admin')->group(function(){
+Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
     Route::view('dashboard', 'cms.dashboard')->name('dashboard');
     Route::resource('cities', CityController::class);
     Route::resource('Profession', ProfessionController::class);
     Route::resource('admins', AdminController::class);
+});
+Route::prefix('cms/admin')->middleware('guest:admin')->group(function(){
+    Route::get('login', [AdminAuthController::class, 'showLogin'])->name('login.view');
+    Route::post('login', [AdminAuthController::class, 'login'])->name('login');
 });

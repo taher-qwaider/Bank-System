@@ -1,10 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Admins')
+@section('title', 'Roles')
 
 
-@section('page-title', 'Admins')
+@section('page-title', 'Roles')
 @section('home-page', 'home')
-@section('sub-page', 'Admin')
+@section('sub-page', 'Roles')
 @section('styles')
      <!-- Toastr -->
      <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
@@ -19,7 +19,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Admins</h3>
+                  <h3 class="card-title">Roles</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -38,39 +38,28 @@
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>email</th>
-                        <th>mobile</th>
-                        <th>Profession</th>
-                        <th>gender</th>
-                        <th>City</th>
+                        <th>Guard</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($admins as $admin)
+                        @foreach($roles as $role)
                         <tr>
-                            <td>{{ $admin->id }}</td>
-                            <td>{{ $admin->full_name }}</td>
-                            <td>{{ $admin->email }}</td>
-                            <td>{{ $admin->mobile }}</td>
-                            <td>{{ $admin->profession->name }}</td>
-                            <td>{{ $admin->genderStatus }}</td>
-                            <td>{{ $admin->city->name }}</td>
-                            <td>{{ $admin->created_at }}</td>
-                            <td>{{ $admin->updated_at }}</td>
+                            <td>{{ $role->id }}</td>
+                            <td>{{ $role->name }}</td>
+                            <td>{{ $role->guard_name }}</td>
+                            <td>{{ $role->created_at }}</td>
+                            <td>{{ $role->updated_at }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-info">
+                                <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>&nbsp;
-                                @if (Auth::user('admin')->id != $admin->id)
-                                    <a href="#" onclick="preformedDelete({{ $admin->id }}, this)" class="btn btn-danger">
+                                    <a href="#" onclick="preformedDelete({{ $role->id }}, this)" class="btn btn-danger">
                                         <i class="fas fa-trash-alt"></i> Delete
                                     </a>
-                                @endif
-
                                 </div>
                             </td>
                           @endforeach
@@ -79,7 +68,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $admins->links() }}
+                        {{ $roles->links() }}
                 </div>
               </div>
               <!-- /.card -->
@@ -114,7 +103,7 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/admin/admins/'+id)
+            axios.delete('/cms/admin/roles/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);

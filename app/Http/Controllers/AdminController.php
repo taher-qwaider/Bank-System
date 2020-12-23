@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AdminWellcomeEmail;
 use App\Models\Admin;
 use App\Models\City;
 use App\Models\Profession;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Validator;
 
 class AdminController extends Controller
@@ -66,6 +69,10 @@ class AdminController extends Controller
             $admin->password = Hash::make('password$');
             $admin->profession_id=$request->get('profession_id');
             $isSaved = $admin->save();
+            if($isSaved){
+                // Mail::to($admin)->queue(new AdminWellcomeEmail($admin));
+                event(new Registered($admin));
+            }
             return response()->json(['message' => $isSaved ? 'Admin created successfully' : 'Failed to create admin'], $isSaved ? 201 : 400);
         } else {
             return response()->json(['message' => $validator->getMessageBag()->first()], 400);
@@ -127,7 +134,6 @@ class AdminController extends Controller
             $admin->mobile = $request->get('mobile');
             $admin->city_id = $request->get('city_id');
             $admin->gender = $request->get('gender');
-            $admin->password = Hash::make('password$');
             $admin->profession_id=$request->get('profession_id');
             $isSaved = $admin->save();
             return response()->json(['message' => $isSaved ? 'Admin Updataed successfully' : 'Failed to Updata admin'], $isSaved ? 201 : 400);

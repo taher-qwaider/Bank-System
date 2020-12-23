@@ -1,10 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Admins')
+@section('title', 'permissions')
 
 
-@section('page-title', 'Admins')
+@section('page-title', 'Permissions')
 @section('home-page', 'home')
-@section('sub-page', 'Admin')
+@section('sub-page', 'Permissions')
 @section('styles')
      <!-- Toastr -->
      <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
@@ -19,7 +19,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Admins</h3>
+                  <h3 class="card-title">Permissions</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -38,39 +38,28 @@
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>email</th>
-                        <th>mobile</th>
-                        <th>Profession</th>
-                        <th>gender</th>
-                        <th>City</th>
+                        <th>Guard</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($admins as $admin)
+                        @foreach($permissions as $permission)
                         <tr>
-                            <td>{{ $admin->id }}</td>
-                            <td>{{ $admin->full_name }}</td>
-                            <td>{{ $admin->email }}</td>
-                            <td>{{ $admin->mobile }}</td>
-                            <td>{{ $admin->profession->name }}</td>
-                            <td>{{ $admin->genderStatus }}</td>
-                            <td>{{ $admin->city->name }}</td>
-                            <td>{{ $admin->created_at }}</td>
-                            <td>{{ $admin->updated_at }}</td>
+                            <td>{{ $permission->id }}</td>
+                            <td>{{ $permission->name }}</td>
+                            <td>{{ $permission->guard_name }}</td>
+                            <td>{{ $permission->created_at }}</td>
+                            <td>{{ $permission->updated_at }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-info">
+                                <a href="{{ route('premissions.edit', $permission->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>&nbsp;
-                                @if (Auth::user('admin')->id != $admin->id)
-                                    <a href="#" onclick="preformedDelete({{ $admin->id }}, this)" class="btn btn-danger">
+                                    <a href="#" onclick="preformedDelete({{ $permission->id }}, this)" class="btn btn-danger">
                                         <i class="fas fa-trash-alt"></i> Delete
                                     </a>
-                                @endif
-
                                 </div>
                             </td>
                           @endforeach
@@ -79,7 +68,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $admins->links() }}
+                        {{ $permissions->links() }}
                 </div>
               </div>
               <!-- /.card -->
@@ -114,7 +103,7 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/admin/admins/'+id)
+            axios.delete('/cms/admin/premissions/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);

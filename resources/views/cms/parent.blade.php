@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | @yield('title')</title>
+  <title>Bank System | @yield('title')</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -163,7 +163,7 @@
           <img src="{{ asset('cms/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Alexander Pierce</a>
+          <a href="#" class="d-block">{{ Auth::user()->full_name }}</a>
         </div>
       </div>
 
@@ -270,50 +270,76 @@
               </li>
             </ul>
           </li>
-          <li class="nav-header">Admins</li>
+          <li class="nav-header">Roles & Permessions</li>
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-envelope"></i>
               <p>
-                Father
+                Roles
                 <i class="fas fa-angle-left right"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('roles.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Index</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{ route('roles.create') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Create</p>
                 </a>
               </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon far fa-envelope"></i>
+              <p>
+                Permessions
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="../mailbox/read-mail.html" class="nav-link">
+                <a href="{{ route('premissions.index') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Updata</p>
+                  <p>Index</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{ route('premissions.create') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Create</p>
                 </a>
               </li>
             </ul>
           </li>
+          <li class="nav-header">Settings</li>
           <li class="nav-item">
-            <a href="../calendar.html" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+            <a href="{{ route('edit-profile') }}" class="nav-link">
+                <i class="fas fa-user"></i>
               <p>
-                Calendar
-                <span class="badge badge-info right">2</span>
+                Edit Profile
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="../gallery.html" class="nav-link">
-              <i class="nav-icon far fa-image"></i>
+            <a href="{{ route('edit-password') }}" class="nav-link">
+                <i class="fas fa-lock"></i>
               <p>
-                Gallery
+                Change password
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('logout') }}" class="nav-link">
+              <i class="nav-icon fas fa-sign-out-alt"></i>
+              <p>
+                Logout
               </p>
             </a>
           </li>

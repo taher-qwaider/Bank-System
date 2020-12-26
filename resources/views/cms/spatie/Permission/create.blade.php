@@ -37,7 +37,7 @@
                   </div>
                 <div class="form-group">
                 <label for="name">Role Name :</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter Role Name">
+                <input type="text" class="form-control" id="name" placeholder="Enter Permission Name">
                 </div>
               </div>
 

@@ -60,19 +60,17 @@
                             <td>{{ $city->updated_at->format('Y-m-d') }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('cities.edit', $city->id) }}" class="btn btn-info">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>&nbsp;
-                                <a href="#" onclick="preformedDelete({{ $city->id }}, this)" class="btn btn-danger">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </a>
-                                {{-- <form method="POST" action="{{ route('cities.destroy', $city->id) }}">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </button>
-                                </form> --}}
+                                    @can('Updata-Cities')
+                                        <a href="{{ route('cities.edit', $city->id) }}" class="btn btn-info">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                    @endcan
+                                    &nbsp;
+                                    @can('Delete-Cities')
+                                        <a href="#" onclick="preformedDelete({{ $city->id }}, this)" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </a>
+                                    @endcan
                                 </div>
                             </td>
                             {{-- <span class="badge bg-danger">55%</span> --}}

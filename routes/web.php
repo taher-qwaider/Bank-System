@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminPermissionController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\RoleController;
@@ -36,6 +37,9 @@ Route::prefix('cms/admin')->middleware('auth:admin', 'verified')->group(function
 
     Route::resource('roles', RoleController::class);
     Route::resource('premissions', PermissionController::class);
+
+    Route::resource('Admins.Permissions', AdminPermissionController::class);
+
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
     Route::put('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
 });

@@ -224,29 +224,37 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-envelope"></i>
-              <p>
-                Cities
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('cities.index') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Index</p>
+          @canany(['Create-Cities', 'Read-Cities'])
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                <i class="nav-icon far fa-envelope"></i>
+                <p>
+                    Cities
+                    <i class="fas fa-angle-left right"></i>
+                </p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('cities.create') }}" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Create</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+                <ul class="nav nav-treeview">
+                    @can('Read-Cities')
+                        <li class="nav-item">
+                            <a href="{{ route('cities.index') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Index</p>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('Create-Cities')
+                        <li class="nav-item">
+                            <a href="{{ route('cities.create') }}" class="nav-link">
+                            <i class="far fa-circle nav-icon"></i>
+                            <p>Create</p>
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+          @endcanany
+
+
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-envelope"></i>

@@ -15,7 +15,7 @@ class CityController extends Controller
      */
     public function index()
     {
-
+        $this->authorize('viewAny', City::class);
         $cities = City::withCount('admins')->paginate(10);
         return response()->view('cms.Cities.index', ['cities'=>$cities]);
     }
@@ -77,7 +77,9 @@ class CityController extends Controller
     public function edit($id)
     {
         //
+
         $city = City::findOrFail($id);
+        $this->authorize('update', $city);
         return response()->view('cms.Cities.edit', ['city'=>$city]);
     }
 

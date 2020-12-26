@@ -42,6 +42,7 @@
                         <th>mobile</th>
                         <th>Profession</th>
                         <th>gender</th>
+                        <th>Permissions</th>
                         <th>City</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
@@ -57,6 +58,9 @@
                             <td>{{ $admin->mobile }}</td>
                             <td>{{ $admin->profession->name }}</td>
                             <td>{{ $admin->genderStatus }}</td>
+                            <td>
+                                <a href="{{ route('Admins.Permissions.index', $admin->id) }}" class="btn btn-info">{{ $admin->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
+                            </td>
                             <td>{{ $admin->city->name }}</td>
                             <td>{{ $admin->created_at }}</td>
                             <td>{{ $admin->updated_at }}</td>

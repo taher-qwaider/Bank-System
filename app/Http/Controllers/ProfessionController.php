@@ -15,6 +15,7 @@ class ProfessionController extends Controller
     public function index()
     {
         //paginate
+        $this->authorize('viewAny', Profession::class);
         $Professions=Profession::withCount('admins')->paginate(10);
         return response()->view('cms.Profession.index', ['Professions'=>$Professions]);
     }
@@ -27,6 +28,7 @@ class ProfessionController extends Controller
     public function create()
     {
         //
+        $this->authorize('create', Profession::class);
         return response()->view('cms.Profession.create');
     }
 
@@ -39,6 +41,7 @@ class ProfessionController extends Controller
     public function store(Request $request)
     {
         //
+        $this->authorize('create', Profession::class);
         $request->validate([
             'name'=>'required|min:3|max:35|string',
             'active'=>'in:on'
@@ -71,6 +74,7 @@ class ProfessionController extends Controller
     public function show($id)
     {
         //
+        $this->authorize('view', Profession::findOrFail($id));
     }
 
     /**
@@ -82,8 +86,9 @@ class ProfessionController extends Controller
     public function edit($id)
     {
         //
-        $Profession=Profession::findOrFail($id);
-        return response()->view('cms.Profession.edit', ['profession'=>$Profession]);
+        $profession=Profession::findOrFail($id);
+        $this->authorize('update', $profession);
+        return response()->view('cms.Profession.edit', ['profession'=>$profession]);
     }
 
     /**
@@ -96,6 +101,8 @@ class ProfessionController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $Profession=Profession::findOrFail($id);
+        $this->authorize('update', $Profession);
         $request->validate([
             'name'=>'required|min:3|max:35|string',
             'active'=>'in:on'
@@ -103,7 +110,7 @@ class ProfessionController extends Controller
             'name.required'=>'please, Enter Profession',
             'name.min'=>'name must be at least 3 chrachters'
         ]);
-        $Profession=Profession::findOrFail($id);
+
         $Profession->name=$request->name;
 
         if ($request->active) {
@@ -128,6 +135,7 @@ class ProfessionController extends Controller
     public function destroy($id)
     {
         //
+        $this->authorize('delete', Profession::findOrFail($id));
         $isDeleted = Profession::destroy($id);
         if($isDeleted){
             return response()->json(['title'=>'Deleted!', 'massege'=>'City Deleted Successfuly', 'icon'=>'success'], 200);

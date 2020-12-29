@@ -5,9 +5,15 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\City;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CityController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(City::class, 'city');
+    // }
+
     /**
      * Display a listing of the resource.
      *
@@ -28,6 +34,7 @@ class CityController extends Controller
     public function create()
     {
         //
+        $this->authorize('create', City::class);
         return response()->view('cms.Cities.create');
     }
 
@@ -40,6 +47,8 @@ class CityController extends Controller
     public function store(Request $request)
     {
         //
+        $city = new City();
+        $this->authorize('create', $city);
         $request->validate([
             'name'=>'required|string|min:3|max:35',
             'active'=>'in:on'
@@ -47,7 +56,6 @@ class CityController extends Controller
             'name.required'=>'please, Enter a name',
             'name.min'=>'city name must be at least 3 charchters'
         ]);
-        $city = new City();
         $city->name=$request->get('name');
         $city->active= $request->has('active')? true:false;
         $isSaved = $city->save();
@@ -93,6 +101,8 @@ class CityController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $city = City::findOrFail($id);
+        $this->authorize('update', $city);
         $request->validate([
             'name'=>'string|max:35|min:3|required',
             'active'=>'in:on'
@@ -100,7 +110,6 @@ class CityController extends Controller
             'name.required'=>'please, Enter a name',
             'name.min'=>'city name must be at least 3 charchters'
         ]);
-        $city = City::findOrFail($id);
         $city->name = $request->name;
         $city->active = $request->has('active');
         $isUpdated = $city->save();
@@ -118,6 +127,7 @@ class CityController extends Controller
     public function destroy($id)
     {
         //
+        $this->authorize('create', City::findOrFail($id));
         $IsDeleted = City::destroy($id);
         if($IsDeleted){
             return response()->json(['title'=>'Deleted!', 'massege'=>'City Deleted Successfuly', 'icon'=>'success'],200);

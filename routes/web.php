@@ -20,33 +20,35 @@ use App\Http\Controllers\PermissionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::fallback(function(){
-   echo('Not Found');
-});
-
-// Route::resource('student', studentController::class);
 Route::prefix('cms/admin')->middleware('auth:admin', 'verified')->group(function(){
+
     Route::view('dashboard', 'cms.dashboard')->name('dashboard');
+
     Route::resource('cities', CityController::class);
     Route::resource('Profession', ProfessionController::class);
     Route::resource('admins', AdminController::class);
-    Route::get('logout', [AdminAuthController::class,'logout'])->name('logout');
-    Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('edit-password');
-    Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('updata-password');
 
     Route::resource('roles', RoleController::class);
     Route::resource('premissions', PermissionController::class);
+
+    Route::get('logout', [AdminAuthController::class,'logout'])->name('logout');
+
+    Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('edit-password');
+    Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('updata-password');
 
     Route::resource('Admins.Permissions', AdminPermissionController::class);
 
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
     Route::put('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
 });
+
+// Login in System
 Route::prefix('cms/admin')->middleware('guest:admin')->group(function(){
     Route::get('login', [AdminAuthController::class, 'showLogin'])->name('login.view');
     Route::post('login', [AdminAuthController::class, 'login'])->name('login');
 });
+
+// Email Verification
 Route::get('/email/verify', function(){
     // return view('auth.verify-email');
     return "Go and verify your email";

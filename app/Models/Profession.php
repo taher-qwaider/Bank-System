@@ -17,4 +17,7 @@ class Profession extends Model
     public function admins(){
         return $this->hasMany(Admin::class, 'profession_id', 'id');
     }
+    public function users(){
+        return $this->hasMany(User::class, 'profession_id', 'id');
+    }
 }

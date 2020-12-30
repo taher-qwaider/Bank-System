@@ -23,7 +23,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="#"><b>Login</b> Admin</a>
+    <a href="#"><b>Login</b> User</a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -98,7 +98,7 @@
 <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 <script>
     function performLogin(){
-            axios.post('/cms/admin/login', {
+            axios.post('/cms/user/login', {
             email: document.getElementById('email').value,
             password: document.getElementById('password').value,
             remember_me: document.getElementById('remember').checked,
@@ -109,7 +109,7 @@
         })
         .catch(function (error) {
             console.log(error.response);
-            showConfirm(error.response.data.massage, false);
+            showConfirm(error.response.data.message, false);
         });
         }
         function showConfirm(massege, status){

@@ -229,13 +229,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('admins.index') }}" class="nav-link">
+                <a href="{{ route('users.index') }}" class="nav-link">
                     <i class="fas fa-list nav-icon"></i>
                   <p>Index</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admins.create') }}" class="nav-link">
+                <a href="{{ route('users.create') }}" class="nav-link">
                    <i class="fas fa-plus nav-icon"></i>
                   <p>Create</p>
                 </a>
@@ -368,12 +368,22 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ route('logout') }}" class="nav-link">
-              <i class="nav-icon fas fa-sign-out-alt"></i>
-              <p>
-                Logout
-              </p>
-            </a>
+              @if (Auth::guard('admin')->check())
+                    <a href="{{ route('logout') }}" class="nav-link">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>
+                        Logout
+                        </p>
+                    </a>
+                @else
+                    <a href="{{ route('user.logout') }}" class="nav-link">
+                        <i class="nav-icon fas fa-sign-out-alt"></i>
+                        <p>
+                        Logout
+                        </p>
+                    </a>
+              @endif
+
           </li>
         </ul>
       </nav>

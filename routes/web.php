@@ -3,12 +3,14 @@
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminPermissionController;
+use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,14 +22,7 @@ use App\Http\Controllers\PermissionController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::prefix('cms/admin')->middleware('auth:admin', 'verified')->group(function(){
-
-    Route::view('dashboard', 'cms.dashboard')->name('dashboard');
-
-    Route::resource('cities', CityController::class);
-    Route::resource('Profession', ProfessionController::class);
-    Route::resource('admins', AdminController::class);
-
+Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
     Route::resource('roles', RoleController::class);
     Route::resource('premissions', PermissionController::class);
 
@@ -41,11 +36,33 @@ Route::prefix('cms/admin')->middleware('auth:admin', 'verified')->group(function
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
     Route::put('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
 });
+Route::prefix('cms/user')->middleware('auth:user')->group(function(){
+    Route::resource('users', UserController::class);
+    Route::get('logout', [UserAuthController::class,'logout'])->name('user.logout');
+
+    Route::get('edit-profile', [UserAuthController::class, 'edit_profile'])->name('user.edit-profile');
+    Route::put('updata-profile', [UserAuthController::class, 'updata_profile'])->name('user.updata-profile');
+
+    Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('edit-password');
+    Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('updata-password');
+});
+Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(function(){
+
+    Route::view('dashboard', 'cms.dashboard')->name('dashboard');
+    Route::resource('cities', CityController::class);
+    Route::resource('Profession', ProfessionController::class);
+    Route::resource('admins', AdminController::class);
+
+});
 
 // Login in System
 Route::prefix('cms/admin')->middleware('guest:admin')->group(function(){
     Route::get('login', [AdminAuthController::class, 'showLogin'])->name('login.view');
     Route::post('login', [AdminAuthController::class, 'login'])->name('login');
+});
+Route::prefix('cms/user')->middleware('guest:user')->group(function(){
+    Route::get('login', [UserAuthController::class, 'showLogin'])->name('user.login.view');
+    Route::post('login', [UserAuthController::class, 'login'])->name('user.login');
 });
 
 // Email Verification

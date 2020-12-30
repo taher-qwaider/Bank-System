@@ -18,4 +18,7 @@ class City extends Model
     public function admins(){
         return $this->hasMany(Admin::class, 'city_id', 'id');
     }
+    public function users(){
+        return $this->hasMany(User::class, 'city_id', 'id');
+    }
 }

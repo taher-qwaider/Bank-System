@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\UserAuthController;
 use App\Models\Admin;
 use App\Models\City;
 use Illuminate\Http\Request;
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('wellcome', function () {
     return response()->json(['massege'=>'Well come']);
+});
+Route::prefix('auth/')->group(function(){
+    Route::post('login', [UserAuthController::class, 'login']);
 });
 Route::get('relation', function () {
     // $data = Admin::find(1)->city()->where('name', 'like', '%p%')->get();

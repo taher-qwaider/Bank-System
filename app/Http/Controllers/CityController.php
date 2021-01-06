@@ -19,11 +19,15 @@ class CityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $this->authorize('viewAny', City::class);
+        // $this->authorize('viewAny', City::class);
         $cities = City::withCount('admins')->paginate(10);
-        return response()->view('cms.Cities.index', ['cities'=>$cities]);
+        if($request->expectsJson()){
+            return response()->json(['status'=>true, 'data'=>$cities], 200);
+        }else{
+            return response()->view('cms.Cities.index', ['cities'=>$cities]);
+        }
     }
 
     /**

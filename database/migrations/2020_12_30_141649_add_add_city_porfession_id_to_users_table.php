@@ -15,7 +15,8 @@ class AddAddCityPorfessionIdToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            $table->foreignId('city_id')->after('mobile');
+            $table->string('image')->nullable()->after('mobile');
+            $table->foreignId('city_id')->after('image');
             $table->foreign('city_id')->references('id')->on('cities');
 
             $table->foreignId('profession_id')->after('city_id');

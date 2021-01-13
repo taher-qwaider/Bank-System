@@ -5,6 +5,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminPermissionController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CityController;
+use App\Http\Controllers\CurrencyContoroller;
+use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +38,7 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
     Route::put('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
 });
-Route::prefix('cms/user')->middleware('auth:user')->group(function(){
+Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
     Route::resource('users', UserController::class);
     Route::get('logout', [UserAuthController::class,'logout'])->name('user.logout');
 
@@ -52,6 +54,8 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
     Route::resource('cities', CityController::class);
     Route::resource('Profession', ProfessionController::class);
     Route::resource('admins', AdminController::class);
+    Route::resource('currency', CurrencyContoroller::class);
+    Route::resource('income_type', IncomeTypeController::class);
 
 });
 

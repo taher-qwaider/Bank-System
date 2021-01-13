@@ -160,7 +160,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="{{ asset('cms/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2" alt="User Image">
+          {{-- <img src="" class="img-circle elevation-2" alt="User Image"> --}}
         </div>
         <div class="info">
           <a href="#" class="d-block">{{ Auth::user()->full_name }}</a>
@@ -264,6 +264,65 @@
                     @can('Create-Cities')
                         <li class="nav-item">
                             <a href="{{ route('cities.create') }}" class="nav-link">
+                            <i class="fas fa-plus nav-icon"></i>
+                            <p>Create</p>
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+          @endcanany
+
+          @canany(['Create-Currency', 'Read-Currency'])
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-dollar-sign"></i>
+                <p>
+                    Currencies
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @can('Read-Currency')
+                        <li class="nav-item">
+                            <a href="{{ route('currency.index') }}" class="nav-link">
+                            <i class="fas fa-list nav-icon"></i>
+                            <p>Index</p>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('Create-Currency')
+                        <li class="nav-item">
+                            <a href="{{ route('currency.create') }}" class="nav-link">
+                            <i class="fas fa-plus nav-icon"></i>
+                            <p>Create</p>
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+          @endcanany
+          @canany(['Create-Currency', 'Read-Currency'])
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-money-check-alt"></i>
+                <p>
+                    Income Types
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                    @can('Read-Currency')
+                        <li class="nav-item">
+                            <a href="{{ route('income_type.index') }}" class="nav-link">
+                            <i class="fas fa-list nav-icon"></i>
+                            <p>Index</p>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('Create-Currency')
+                        <li class="nav-item">
+                            <a href="{{ route('income_type.create') }}" class="nav-link">
                             <i class="fas fa-plus nav-icon"></i>
                             <p>Create</p>
                             </a>
@@ -421,7 +480,7 @@
     <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.0.5
     </div>
-    <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong> All rights
+    <strong>Copyright &copy; 2014-2019 <a href="{{ route('dashboard') }}">Bank System</a>.</strong> All rights
     reserved.
   </footer>
 

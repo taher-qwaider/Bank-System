@@ -1,10 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Users')
+@section('title', 'Income Types')
 
 
-@section('page-title', 'Users')
+@section('page-title', 'Income Types')
 @section('home-page', 'home')
-@section('sub-page', 'Users')
+@section('sub-page', 'Income Types')
 @section('styles')
      <!-- Toastr -->
      <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
@@ -19,7 +19,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Users</h3>
+                  <h3 class="card-title">Income Types</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -38,43 +38,30 @@
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>email</th>
-                        <th>mobile</th>
-                        <th>Profession</th>
-                        <th>gender</th>
-                        <th>Permissions</th>
-                        <th>City</th>
+                        <th>Details</th>
+                        <th>Status</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                        @foreach($income_types as $type)
                         <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>{{ $user->full_name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->mobile }}</td>
-                            <td>{{ $user->profession->name }}</td>
-                            <td>{{ $user->gender_status }}</td>
-                            <td>
-                                <a href="" class="btn btn-info">{{ $user->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
-                            </td>
-                            <td>{{ $user->city->name }}</td>
-                            <td>{{ $user->created_at }}</td>
-                            <td>{{ $user->updated_at }}</td>
+                            <td>{{ $type->id }}</td>
+                            <td>{{ $type->name }}</td>
+                            <td>{{ $type->details }}</td>
+                            <td><span class="badge bg-success">{{ $type->status }}</span></td>
+                            <td>{{ $type->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $type->updated_at->format('Y-m-d') }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">
+                                <a href="{{ route('income_type.edit', $type->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>&nbsp;
-                                @if (Auth::user('user')->id != $user->id)
-                                    <a href="#" onclick="preformedDelete({{ $user->id }}, this)" class="btn btn-danger">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </a>
-                                @endif
-
+                                <a href="#" onclick="preformedDelete({{ $type->id }}, this)" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
                                 </div>
                             </td>
                           @endforeach
@@ -83,7 +70,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $users->links() }}
+                        {{ $income_types->links() }}
                 </div>
               </div>
               <!-- /.card -->

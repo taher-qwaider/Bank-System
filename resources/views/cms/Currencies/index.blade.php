@@ -1,14 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Users')
+@section('title', 'Currency')
 
 
-@section('page-title', 'Users')
+@section('page-title', 'Currency')
 @section('home-page', 'home')
-@section('sub-page', 'Users')
-@section('styles')
-     <!-- Toastr -->
-     <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
-@endsection
+@section('sub-page', 'Currency')
 
 @section('content')
     <!-- Main content -->
@@ -19,7 +15,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Users</h3>
+                  <h3 class="card-title">Currencies</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -38,52 +34,49 @@
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>email</th>
-                        <th>mobile</th>
-                        <th>Profession</th>
-                        <th>gender</th>
-                        <th>Permissions</th>
-                        <th>City</th>
+                        <th>Active</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($users as $user)
+                        @foreach($currencies as $currency)
                         <tr>
-                            <td>{{ $user->id }}</td>
-                            <td>{{ $user->full_name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->mobile }}</td>
-                            <td>{{ $user->profession->name }}</td>
-                            <td>{{ $user->gender_status }}</td>
+                            <td>{{ $currency->id }}</td>
+                            <td>{{ $currency->name }}</td>
                             <td>
-                                <a href="" class="btn btn-info">{{ $user->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
+                                @if($currency->active)
+                                    <span class="badge bg-success">{{ $currency->status }}</span>
+                                @else
+                                    <span class="badge bg-danger">{{ $currency->status }}</span>
+                                @endif
                             </td>
-                            <td>{{ $user->city->name }}</td>
-                            <td>{{ $user->created_at }}</td>
-                            <td>{{ $user->updated_at }}</td>
+                            <td>{{ $currency->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $currency->updated_at->format('Y-m-d') }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('users.edit', $user->id) }}" class="btn btn-info">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>&nbsp;
-                                @if (Auth::user('user')->id != $user->id)
-                                    <a href="#" onclick="preformedDelete({{ $user->id }}, this)" class="btn btn-danger">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </a>
-                                @endif
-
+                                    @can('Updata-Cities')
+                                        <a href="{{ route('currency.edit', $currency->id) }}" class="btn btn-info">
+                                            <i class="fas fa-edit"></i> Edit
+                                        </a>
+                                    @endcan
+                                    &nbsp;
+                                    @can('Delete-Cities')
+                                        <a href="#" onclick="preformedDelete({{ $currency->id }}, this)" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </a>
+                                    @endcan
                                 </div>
                             </td>
+                            {{-- <span class="badge bg-danger">55%</span> --}}
                           @endforeach
                     </tbody>
                   </table>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $users->links() }}
+                        {{ $currencies->links() }}
                 </div>
               </div>
               <!-- /.card -->
@@ -96,8 +89,6 @@
 @endsection
 
 @section('scripts')
-    <!-- Toastr -->
-    <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
         function preformedDelete(id, refernce){
             showAlert(id, refernce);
@@ -118,26 +109,48 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/user/users/'+id)
+            axios.delete('/cms/admin/currency/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);
                 refernce.closest('tr').remove();
-                responsAlert(response.data, true);
+                responsAlert(response.data);
             })
             .catch(function (error) {
                 // handle error
                 console.log(error.response.data);
-                responsAlert(error.response.data, false);
+                responsAlert(error.response.data);
             })
         }
-        function responsAlert(data, status){
-            if(status){
-                toastr.success(data.message);
-            }else{
-                toastr.error(data.message);
+        function responsAlert(data){
+            let timerInterval
+            Swal.fire({
+            title: data.title,
+            text: data.massege,
+            icon: data.icon,
+            timer: 2000,
+            showConfirmButton: false,
+            willOpen: () => {
+                Swal.showLoading()
+                timerInterval = setInterval(() => {
+                const content = Swal.getContent()
+                if (content) {
+                    const b = content.querySelector('b')
+                    if (b) {
+                    b.textContent = Swal.getTimerLeft()
+                    }
+                }
+                }, 100)
+            },
+            willClose: () => {
+                clearInterval(timerInterval)
             }
-
+            }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+                console.log('I was closed by the timer')
+            }
+            });
         }
     </script>
 @endsection

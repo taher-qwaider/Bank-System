@@ -35,6 +35,11 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'Updata-User', 'guard_name'=>'user']);
         Permission::create(['name'=>'Delete-User', 'guard_name'=>'user']);
 
+        Permission::create(['name'=>'Create-Currency', 'guard_name'=>'admin']);
+        Permission::create(['name'=>'Read-Currency', 'guard_name'=>'admin']);
+        Permission::create(['name'=>'Updata-Currency', 'guard_name'=>'admin']);
+        Permission::create(['name'=>'Delete-Currency', 'guard_name'=>'admin']);
+
         // Permission::create(['name'=>'Create-', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Read-', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Updata-', 'guard_name'=>'admin']);

@@ -1,9 +1,9 @@
 @extends('cms.parent')
-@section('title', 'Create Rloe')
+@section('title', 'Update Expense Type')
 
-@section('page-title', 'Rloe')
+@section('page-title', 'Expense Type')
 @section('home-page', 'Home')
-@section('sub-page', 'Role')
+@section('sub-page', 'Expense Type')
 
 @section('styles')
       <!-- Select2 -->
@@ -22,29 +22,30 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Create Roles</h3>
+              <h3 class="card-title">Edit Expense Type</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="create_role">
-                @csrf
+            <form id="create_admin">
               <div class="card-body">
                 <div class="form-group">
-                    <label>Gard :</label>
-                    <select class="form-control gards" id="gards" style="width: 100%;">
-                            <option value="admin">Admin</option>
-                            <option value="user">User</option>
-                    </select>
-                  </div>
+                <label for="name">Name :</label>
+                <input type="text" class="form-control" id="name" value="{{ $expense_type->name }}">
+                </div>
                 <div class="form-group">
-                <label for="name">Role Name :</label>
-                <input type="text" class="form-control" id="role" placeholder="Enter Role Name">
+                    <label for="details">Details :</label>
+                    <input type="text" class="form-control" id="details" value="{{ $expense_type->details }}">
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="active" @if($expense_type->active) checked @endif>
+                        <label class="custom-control-label" for="active">Active</label>
+                    </div>
                 </div>
               </div>
-
               <!-- /.card-body -->
               <div class="card-footer">
-                <button type="button" onclick="performSave()" class="btn btn-primary">Save</button>
+                <button type="button" onclick="performupdata({{ $expense_type->id }})" class="btn btn-primary">Save</button>
               </div>
             </form>
           </div>
@@ -54,26 +55,19 @@
 </section>
 @endsection
 @section('scripts')
-    <!-- Select2 -->
-    <script src="{{ asset('cms/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Toastr -->
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
-        //Initialize Select2 Elements
-        $('.gards').select2({
-        theme: 'bootstrap4'
-        });
-    </script>
-    <script>
-        function performSave(){
-            axios.post('/cms/admin/roles', {
-            gard: document.getElementById('gards').value,
-            name: document.getElementById('role').value,
+        function performupdata(id){
+            axios.put('/cms/admin/expense_type/'+id , {
+            name: document.getElementById('name').value,
+            details: document.getElementById('details').value,
+            active: document.getElementById('active').checked,
         })
         .then(function (response) {
             console.log(response);
-            showConfirm(response.data.message, true);
-            document.getElementById('create_role').reset();
+            // showConfirm(response.data.message, true);
+            window.location.href='{{ route('expense_type.index') }}';
         })
         .catch(function (error) {
             console.log(error);

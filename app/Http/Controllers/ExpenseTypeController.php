@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\IncomeType;
+use App\Models\ExpenseType;
 use Illuminate\Http\Request;
 
-class IncomeTypeController extends Controller
+class ExpenseTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class IncomeTypeController extends Controller
     public function index()
     {
         //
-        $income_types = IncomeType::paginate(10);
-        return response()->view('cms.Income-Type.index', ['income_types' => $income_types]);
+        $expense_types = ExpenseType::paginate(10);
+        return response()->view('cms.Expense-Type.index', ['expense_types' => $expense_types]);
     }
 
     /**
@@ -27,7 +27,7 @@ class IncomeTypeController extends Controller
     public function create()
     {
         //
-        return response()->view('cms.Income-Type.create');
+        return response()->view('cms.Expense-Type.create');
     }
 
     /**
@@ -45,13 +45,13 @@ class IncomeTypeController extends Controller
             'active' => 'boolean',
         ]);
         if(!$validator->fails()){
-            $income_type = new IncomeType();
-            $income_type->name = $request->get('name');
-            $income_type->details = $request->get('details');
-            $income_type->active = $request->get('active');
-            $income_type->user_id = $request->user()->id;
-            $isSaved = $income_type->save();
-            return response()->json(['message'=>$isSaved ? "Income Type Created successfully" : "Failed to create Income Type"],$isSaved ? 201 : 400);
+            $expense_type = new ExpenseType();
+            $expense_type->name = $request->get('name');
+            $expense_type->details = $request->get('details');
+            $expense_type->active = $request->get('active');
+            $expense_type->user_id = $request->user()->id;
+            $isSaved = $expense_type->save();
+            return response()->json(['message'=>$isSaved ? "Expense Type Created successfully" : "Failed to create Expense Type"],$isSaved ? 201 : 400);
         }else{
             return response()->json(['message'=>$validator->getMessageBag()], 400);
         }
@@ -77,8 +77,8 @@ class IncomeTypeController extends Controller
     public function edit($id)
     {
         //
-        $income_type = IncomeType::findOrFail($id);
-        return response()->view('cms.Income-Type.edit', ['income_type' => $income_type]);
+        $expense_type = ExpenseType::findOrFail($id);
+        return response()->view('cms.Expense-Type.edit', ['expense_type' => $expense_type]);
     }
 
     /**
@@ -97,13 +97,13 @@ class IncomeTypeController extends Controller
             'active' => 'boolean',
         ]);
         if(!$validator->fails()){
-            $income_type = IncomeType::findOrFail($id);
-            $income_type->name = $request->get('name');
-            $income_type->details = $request->get('details');
-            $income_type->active = $request->get('active');
-            $income_type->user_id = $request->user()->id;
-            $isSaved = $income_type->save();
-            return response()->json(['message'=>$isSaved ? "Income Type Updated successfully" : "Failed to Updated Income Type"],$isSaved ? 200 : 400);
+            $expense_type = ExpenseType::findOrFail($id);
+            $expense_type->name = $request->get('name');
+            $expense_type->details = $request->get('details');
+            $expense_type->active = $request->get('active');
+            $expense_type->user_id = $request->user()->id;
+            $isSaved = $expense_type->save();
+            return response()->json(['message'=>$isSaved ? "Expense Type Updated successfully" : "Failed to Updated Expense Type"],$isSaved ? 200 : 400);
         }else{
             return response()->json(['message'=>$validator->getMessageBag()], 400);
         }
@@ -118,7 +118,7 @@ class IncomeTypeController extends Controller
     public function destroy($id)
     {
         //
-        $isDeleted = IncomeType::destroy($id);
+        $isDeleted = ExpenseType::destroy($id);
         return response()->json(['message' =>
          $isDeleted ?
              "Income Type Deleted successfully" : "Falid to Delete Income Type"],

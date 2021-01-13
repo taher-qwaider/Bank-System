@@ -1,14 +1,11 @@
 @extends('cms.parent')
-@section('title', 'Create Rloe')
+@section('title', 'Create Expense Type')
 
-@section('page-title', 'Rloe')
+@section('page-title', 'Expense Type')
 @section('home-page', 'Home')
-@section('sub-page', 'Role')
+@section('sub-page', 'Expense Type')
 
 @section('styles')
-      <!-- Select2 -->
-      <link rel="stylesheet" href="{{ asset('cms/plugins/select2/css/select2.min.css') }}">
-      <link rel="stylesheet" href="{{ asset('cms/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css') }}">
         <!-- Toastr -->
         <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
 @endsection
@@ -22,23 +19,27 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Create Roles</h3>
+              <h3 class="card-title">Create Expense Type</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="create_role">
+            <form id="create_expense_type">
                 @csrf
               <div class="card-body">
                 <div class="form-group">
-                    <label>Gard :</label>
-                    <select class="form-control gards" id="gards" style="width: 100%;">
-                            <option value="admin">Admin</option>
-                            <option value="user">User</option>
-                    </select>
-                  </div>
+                <label for="name">Name :</label>
+                <input type="text" class="form-control" id="name" placeholder="Enter Name">
+                </div>
                 <div class="form-group">
-                <label for="name">Role Name :</label>
-                <input type="text" class="form-control" id="role" placeholder="Enter Role Name">
+                    <label for="details">Details :</label>
+                    <input type="text" class="form-control" id="details" placeholder="Enter Details">
+                </div>
+                <div class="form-group">
+                    <div class="custom-control custom-switch">
+                        <input type="checkbox" class="custom-control-input" id="active"
+                            checked>
+                        <label class="custom-control-label" for="active">Active</label>
+                    </div>
                 </div>
               </div>
 
@@ -54,38 +55,36 @@
 </section>
 @endsection
 @section('scripts')
-    <!-- Select2 -->
-    <script src="{{ asset('cms/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Toastr -->
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
-    <script>
-        //Initialize Select2 Elements
-        $('.gards').select2({
-        theme: 'bootstrap4'
-        });
-    </script>
+
     <script>
         function performSave(){
-            axios.post('/cms/admin/roles', {
-            gard: document.getElementById('gards').value,
-            name: document.getElementById('role').value,
-        })
+
+        axios.post('/cms/admin/expense_type' ,{
+            name:document.getElementById('name').value,
+            details:document.getElementById('details').value,
+            active:document.getElementById('active').checked,
+        }
+        )
         .then(function (response) {
             console.log(response);
             showConfirm(response.data.message, true);
-            document.getElementById('create_role').reset();
+            document.getElementById('create_expense_type').reset();
         })
         .catch(function (error) {
             console.log(error);
             showConfirm(error.response.data.message, false);
         });
         }
-        function showConfirm(massege, status){
+
+        function showConfirm(message, status){
             if(status){
-                toastr.success(massege);
+                toastr.success(message);
             }else{
-                toastr.error(massege);
+                toastr.error(message);
             }
+
         }
     </script>
 @endsection

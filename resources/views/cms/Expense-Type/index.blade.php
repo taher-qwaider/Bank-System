@@ -1,10 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Roles')
+@section('title', 'Expense Types')
 
 
-@section('page-title', 'Roles')
+@section('page-title', 'Expense Types')
 @section('home-page', 'home')
-@section('sub-page', 'Roles')
+@section('sub-page', 'Expense Types')
 @section('styles')
      <!-- Toastr -->
      <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
@@ -19,7 +19,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Roles</h3>
+                  <h3 class="card-title">Expense Types</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -38,32 +38,30 @@
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>Guard</th>
-                        <th>Permissions</th>
+                        <th>Details</th>
+                        <th>Status</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($roles as $role)
+                        @foreach($expense_types as $type)
                         <tr>
-                            <td>{{ $role->id }}</td>
-                            <td>{{ $role->name }}</td>
-                            <td>{{ $role->guard_name }}</td>
-                            <td>
-                                <a href="{{ route('Role.Permissions.index', $role->id) }}" class="btn btn-info">{{ $role->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
-                            </td>
-                            <td>{{ $role->created_at }}</td>
-                            <td>{{ $role->updated_at }}</td>
+                            <td>{{ $type->id }}</td>
+                            <td>{{ $type->name }}</td>
+                            <td>{{ $type->details }}</td>
+                            <td><span @if($type->active) class="badge bg-success" @else  class="badge bg-danger" @endif>{{ $type->status }}</span></td>
+                            <td>{{ $type->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $type->updated_at->format('Y-m-d') }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-info">
+                                <a href="{{ route('expense_type.edit', $type->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>&nbsp;
-                                    <a href="#" onclick="preformedDelete({{ $role->id }}, this)" class="btn btn-danger">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </a>
+                                <a href="#" onclick="preformedDelete({{ $type->id }}, this)" class="btn btn-danger">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </a>
                                 </div>
                             </td>
                           @endforeach
@@ -72,7 +70,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $roles->links() }}
+                        {{ $expense_types->links() }}
                 </div>
               </div>
               <!-- /.card -->
@@ -107,7 +105,7 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/admin/roles/'+id)
+            axios.delete('/cms/admin/expense_type/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);
@@ -122,9 +120,9 @@
         }
         function responsAlert(data, status){
             if(status){
-                toastr.success(data.massege);
+                toastr.success(data.message);
             }else{
-                toastr.error(data.massege);
+                toastr.error(data.message);
             }
 
         }

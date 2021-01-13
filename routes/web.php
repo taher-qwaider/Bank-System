@@ -6,12 +6,14 @@ use App\Http\Controllers\AdminPermissionController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CurrencyContoroller;
+use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RolePermissiomController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -34,6 +36,7 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
     Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('updata-password');
 
     Route::resource('Admins.Permissions', AdminPermissionController::class);
+    Route::resource('Role.Permissions', RolePermissiomController::class);
 
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
     Route::put('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
@@ -56,6 +59,7 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
     Route::resource('admins', AdminController::class);
     Route::resource('currency', CurrencyContoroller::class);
     Route::resource('income_type', IncomeTypeController::class);
+    Route::resource('expense_type', ExpenseTypeController::class);
 
 });
 

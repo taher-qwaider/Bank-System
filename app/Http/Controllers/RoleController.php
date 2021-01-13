@@ -15,7 +15,7 @@ class RoleController extends Controller
     public function index()
     {
         //
-        $roles=Role::paginate(10);
+        $roles=Role::withCount('permissions')->paginate(10);
         return response()->view('cms.spatie.Roles.index', ['roles'=>$roles]);
     }
 
@@ -40,7 +40,7 @@ class RoleController extends Controller
     {
         //
         $validator=validator($request->all(), [
-            'gard'=>'required|string|in:admin',
+            'gard'=>'required|string|in:admin,user',
             'name'=>'required|string|min:3'
         ]);
         if(!$validator->fails()){
@@ -74,7 +74,7 @@ class RoleController extends Controller
     public function edit($id)
     {
         //
-        $role = Role::findById($id);
+        $role = Role::findOrFail($id);
         return response()->view('cms.spatie.Roles.edit', ['role'=>$role]);
     }
 
@@ -88,12 +88,13 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $role = Role::findById($id);
+
         $validator=validator($request->all(), [
-            'guard'=>'required|string|in:admin',
+            'guard'=>'required|string|in:admin,user',
             'name'=>'required|string|min:3'
         ]);
         if(!$validator->fails()){
+            $role = Role::findOrFail($id);
             $role->name=$request->get('name');
             $role->guard_name=$request->get('guard');
             $isSaved=$role->save();

@@ -60,7 +60,7 @@
           <a href="#" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="../../dist/img/user1-128x128.jpg" alt="User Avatar" class="img-size-50 mr-3 img-circle">
+              <img src="{{ asset('cms/dist/img/user1-128x128.jpg') }}" alt="User Avatar" class="img-size-50 mr-3 img-circle">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   Brad Diesel
@@ -163,7 +163,7 @@
           {{-- <img src="" class="img-circle elevation-2" alt="User Image"> --}}
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->full_name }}</a>
+          <a href="{{ route('edit-profile') }}" class="d-block">{{ Auth::user()->full_name }}</a>
         </div>
       </div>
 
@@ -302,7 +302,7 @@
                 </ul>
             </li>
           @endcanany
-          @canany(['Create-Currency', 'Read-Currency'])
+          @canany(['Create-Income_Type', 'Read-Income_Type'])
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
                 <i class="nav-icon fas fa-money-check-alt"></i>
@@ -312,7 +312,7 @@
                 </p>
                 </a>
                 <ul class="nav nav-treeview">
-                    @can('Read-Currency')
+                    @can('Read-Income_Type')
                         <li class="nav-item">
                             <a href="{{ route('income_type.index') }}" class="nav-link">
                             <i class="fas fa-list nav-icon"></i>
@@ -320,7 +320,7 @@
                             </a>
                         </li>
                     @endcan
-                    @can('Create-Currency')
+                    @can('Create-Income_Type')
                         <li class="nav-item">
                             <a href="{{ route('income_type.create') }}" class="nav-link">
                             <i class="fas fa-plus nav-icon"></i>
@@ -330,6 +330,35 @@
                     @endcan
                 </ul>
             </li>
+          @endcanany
+          @canany(['Create-Expense_Type','Read-Expense_Type'])
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-money-bill-alt"></i>
+              <p>
+                Expense Types
+                <i class="fas fa-angle-left right"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              {{-- @can('Read-Expense_Type') --}}
+              <li class="nav-item">
+                <a href="{{ route('expense_type.index') }}" class="nav-link">
+                  <i class="fas fa-list nav-icon"></i>
+                  <p>Index</p>
+                </a>
+              </li>
+              {{-- @endcan --}}
+              @can('Create-Expense_Type')
+              <li class="nav-item">
+                <a href="{{ route('expense_type.create') }}" class="nav-link">
+                  <i class="fas fa-plus nav-icon"></i>
+                  <p>Create</p>
+                </a>
+              </li>
+              @endcan
+            </ul>
+          </li>
           @endcanany
           @canany(['Read-Profission', 'Create-Profission'])
             <li class="nav-item has-treeview">

@@ -22,7 +22,7 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Create Admin</h3>
+              <h3 class="card-title">Edit Role</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
@@ -33,6 +33,7 @@
                         <label>Gard :</label>
                         <select class="form-control guards" id="guard" style="width: 100%;">
                                 <option value="admin" @if ($role->guard_name == "admin") selected @endif>Admin</option>
+                                <option value="user" @if ($role->guard_name == "user") selected @endif>User</option>
                         </select>
                       </div>
                     <div class="form-group">

@@ -51,7 +51,7 @@
                             <td>{{ $type->id }}</td>
                             <td>{{ $type->name }}</td>
                             <td>{{ $type->details }}</td>
-                            <td><span class="badge bg-success">{{ $type->status }}</span></td>
+                            <td><span @if($type->active) class="badge bg-success" @else  class="badge bg-danger" @endif>{{ $type->status }}</span></td>
                             <td>{{ $type->created_at->format('Y-m-d') }}</td>
                             <td>{{ $type->updated_at->format('Y-m-d') }}</td>
                             <td>
@@ -105,7 +105,7 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/user/users/'+id)
+            axios.delete('/cms/admin/income_type/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);

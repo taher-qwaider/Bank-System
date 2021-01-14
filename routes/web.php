@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\spatie\PermissionController;
 use App\Http\Controllers\spatie\RolePermissiomController;
+use App\Http\Controllers\spatie\UserPermissionController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -41,6 +42,9 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
 
     Route::get('admins/{admin}/roles', [AdminRoleController::class, 'index'])->name('admin.role.index');
     Route::post('admins/{admin}/roles', [AdminRoleController::class, 'store']);
+
+    Route::get('users/{user}/permissions', [UserPermissionController::class, 'index'])->name('user.permission.index');
+    Route::post('users/{user}/permissions', [UserPermissionController::class, 'store']);
 
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
     Route::put('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');

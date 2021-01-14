@@ -59,7 +59,7 @@
                             <td>{{ $user->profession->name }}</td>
                             <td><span class="badge bg-success">{{ $user->gender_status }}</span></td>
                             <td>
-                                <a href="" class="btn btn-info">{{ $user->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
+                                <a href="{{ route('user.permission.index', $user->id) }}" class="btn btn-info">{{ $user->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
                             </td>
                             <td>{{ $user->city->name }}</td>
                             <td>{{ $user->created_at }}</td>

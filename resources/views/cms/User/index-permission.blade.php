@@ -54,7 +54,7 @@
                             </td>
                             <td>
                                 <div class="icheck-success d-inline">
-                                    <input type="checkbox" id="permission_{{ $permission->id }}" onclick="store({{ $adminId }}, {{ $permission->id }})"
+                                    <input type="checkbox" id="permission_{{ $permission->id }}" onclick="store({{ $userId }}, {{ $permission->id }})"
                                     @if($permission->active)
                                     checked
                                     @endif
@@ -70,7 +70,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{-- {{ $cities->links() }} --}}
+                        {{ $permissions->links() }}
                 </div>
               </div>
               <!-- /.card -->
@@ -87,7 +87,7 @@
         <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
         function store(id, permission_id){
-            axios.post('/cms/admin/Admins/'+id+'/Permissions', {
+            axios.post('/cms/admin/users/'+id+'/permissions', {
                 permission_id:permission_id,
                 // active:document.getElementById
             })

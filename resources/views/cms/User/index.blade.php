@@ -57,7 +57,7 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ $user->mobile }}</td>
                             <td>{{ $user->profession->name }}</td>
-                            <td>{{ $user->gender_status }}</td>
+                            <td><span class="badge bg-success">{{ $user->gender_status }}</span></td>
                             <td>
                                 <a href="" class="btn btn-info">{{ $user->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
                             </td>

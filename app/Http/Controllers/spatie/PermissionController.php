@@ -88,7 +88,7 @@ class PermissionController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $permission =Permission::findById($id);
+        $permission =Permission::findOrFail($id);
         $validator=validator($request->all(), [
             'guard'=>'required|string|in:admin',
             'name'=>'required|string|min:3'

@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function index()
     {
         //paginate
-        $admins=Admin::withCount('permissions')->with(['city', 'profession'])->paginate(10);
+        $admins=Admin::withCount(['permissions', 'roles'])->with(['city', 'profession'])->paginate(10);
         return response()->view('cms.Admins.index', ['admins'=>$admins]);
     }
 

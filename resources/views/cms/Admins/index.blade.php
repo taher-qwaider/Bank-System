@@ -41,9 +41,10 @@
                         <th>email</th>
                         <th>mobile</th>
                         <th>Profession</th>
+                        <th>City</th>
                         <th>gender</th>
                         <th>Permissions</th>
-                        <th>City</th>
+                        <th>Role</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
@@ -57,13 +58,16 @@
                             <td>{{ $admin->email }}</td>
                             <td>{{ $admin->mobile }}</td>
                             <td>{{ $admin->profession->name }}</td>
-                            <td>{{ $admin->genderStatus }}</td>
+                            <td>{{ $admin->city->name }}</td>
+                            <td><span class="badge bg-success">{{ $admin->gender_status }}</span></td>
                             <td>
                                 <a href="{{ route('Admins.Permissions.index', $admin->id) }}" class="btn btn-info">{{ $admin->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
                             </td>
-                            <td>{{ $admin->city->name }}</td>
-                            <td>{{ $admin->created_at }}</td>
-                            <td>{{ $admin->updated_at }}</td>
+                            <td>
+                                <a href="{{ route('admin.role.index', $admin->id) }}" class="btn btn-info">{{ $admin->roles_count }} / Roles <i class="fas fa-user-tie"></i></a>
+                            </td>
+                            <td>{{ $admin->created_at->format('Y-m-d')  }}</td>
+                            <td>{{ $admin->updated_at->format('Y-m-d')  }}</td>
                             <td>
                                 <div class="btn-group">
                                 <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-info">

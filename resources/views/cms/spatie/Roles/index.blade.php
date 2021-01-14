@@ -54,8 +54,8 @@
                             <td>
                                 <a href="{{ route('Role.Permissions.index', $role->id) }}" class="btn btn-info">{{ $role->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
                             </td>
-                            <td>{{ $role->created_at }}</td>
-                            <td>{{ $role->updated_at }}</td>
+                            <td>{{ $role->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $role->updated_at->format('Y-m-d')  }}</td>
                             <td>
                                 <div class="btn-group">
                                 <a href="{{ route('roles.edit', $role->id) }}" class="btn btn-info">

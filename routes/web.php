@@ -2,18 +2,19 @@
 
 use App\Http\Controllers\Auth\AdminAuthController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminPermissionController;
+use App\Http\Controllers\spatie\AdminPermissionController;
+use App\Http\Controllers\spatie\AdminRoleController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CurrencyContoroller;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\ProfessionController;
-use App\Http\Controllers\RoleController;
+use App\Http\Controllers\spatie\RoleController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
-use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\RolePermissiomController;
+use App\Http\Controllers\spatie\PermissionController;
+use App\Http\Controllers\spatie\RolePermissiomController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -38,9 +39,13 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
     Route::resource('Admins.Permissions', AdminPermissionController::class);
     Route::resource('Role.Permissions', RolePermissiomController::class);
 
+    Route::get('admins/{admin}/roles', [AdminRoleController::class, 'index'])->name('admin.role.index');
+    Route::post('admins/{admin}/roles', [AdminRoleController::class, 'store']);
+
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
     Route::put('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
 });
+
 Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
     Route::resource('users', UserController::class);
     Route::get('logout', [UserAuthController::class,'logout'])->name('user.logout');
@@ -51,6 +56,8 @@ Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
     Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('edit-password');
     Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('updata-password');
 });
+
+
 Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(function(){
 
     Route::view('dashboard', 'cms.dashboard')->name('dashboard');

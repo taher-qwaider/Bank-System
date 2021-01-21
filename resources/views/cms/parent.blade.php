@@ -389,6 +389,35 @@
                 </ul>
             </li>
           @endcanany
+          @canany(['Read-Wallets', 'Create-Wallets'])
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                <i class="nav-icon far fa-building"></i>
+                <p>
+                    Wallets
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                @can('Read-Wallets')
+                    <li class="nav-item">
+                        <a href="{{ route('wallets.index') }}" class="nav-link">
+                            <i class="fas fa-list nav-icon"></i>
+                        <p>Index</p>
+                        </a>
+                    </li>
+                @endcan
+                @can('Create-Wallets')
+                    <li class="nav-item">
+                        <a href="{{ route('wallets.create') }}" class="nav-link">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Create</p>
+                        </a>
+                    </li>
+                @endcan
+                </ul>
+            </li>
+          @endcanany
 
           <li class="nav-header">Roles & Permessions</li>
           <li class="nav-item has-treeview">

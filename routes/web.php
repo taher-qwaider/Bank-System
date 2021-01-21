@@ -17,6 +17,7 @@ use App\Http\Controllers\spatie\PermissionController;
 use App\Http\Controllers\spatie\RolePermissiomController;
 use App\Http\Controllers\spatie\UserPermissionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WalletController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,6 +72,7 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
     Route::resource('currency', CurrencyContoroller::class);
     Route::resource('income_type', IncomeTypeController::class);
     Route::resource('expense_type', ExpenseTypeController::class);
+    Route::resource('wallets', WalletController::class);
 
 });
 

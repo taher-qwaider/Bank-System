@@ -83,4 +83,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function profession(){
         return $this->belongsTo(Profession::class, 'profession_id', 'id');
     }
+    public function wallets(){
+        return $this->hasMany(Wallet::class, 'user_id', 'id');
+    }
 }

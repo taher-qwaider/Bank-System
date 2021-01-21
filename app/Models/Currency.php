@@ -15,4 +15,7 @@ class Currency extends Model
             return "Inactive";
         }
     }
+    public function wallets(){
+        return $this->hasMany(Wallet::class, 'currency_id', 'id');
+    }
 }

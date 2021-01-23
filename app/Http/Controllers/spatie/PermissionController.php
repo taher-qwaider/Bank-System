@@ -41,7 +41,7 @@ class PermissionController extends Controller
     {
         //
         $validator=validator($request->all(), [
-            'gard'=>'required|string|in:admin',
+            'gard'=>'required|string|in:admin,user',
             'name'=>'required|string|min:3'
         ]);
         if(!$validator->fails()){
@@ -75,7 +75,7 @@ class PermissionController extends Controller
     public function edit($id)
     {
         //
-        $permission =Permission::findById($id);
+        $permission =Permission::findOrFail($id);
         return response()->view('cms.spatie.Permission.edit', ['permission'=>$permission]);
     }
 
@@ -91,7 +91,7 @@ class PermissionController extends Controller
         //
         $permission =Permission::findOrFail($id);
         $validator=validator($request->all(), [
-            'guard'=>'required|string|in:admin',
+            'guard'=>'required|string|in:admin,user',
             'name'=>'required|string|min:3'
         ]);
         if(!$validator->fails()){

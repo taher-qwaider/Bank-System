@@ -33,6 +33,7 @@
                     <label>Gard :</label>
                     <select class="form-control Permissions" id="gard" style="width: 100%;">
                             <option value="admin">Admin</option>
+                            <option value="user">User</option>
                     </select>
                   </div>
                 <div class="form-group">
@@ -59,7 +60,7 @@
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
         //Initialize Select2 Elements
-        $('.Permission').select2({
+        $('.Permissions').select2({
         theme: 'bootstrap4'
         });
     </script>

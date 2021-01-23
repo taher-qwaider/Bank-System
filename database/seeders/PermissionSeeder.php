@@ -50,10 +50,15 @@ class PermissionSeeder extends Seeder
         // Permission::create(['name'=>'Updata-Expense_Type', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Delete-Expense_Type', 'guard_name'=>'admin']);
 
-        Permission::create(['name'=>'Create-Wallets', 'guard_name'=>'user']);
-        Permission::create(['name'=>'Read-Wallets', 'guard_name'=>'user']);
-        Permission::create(['name'=>'Updata-Wallets', 'guard_name'=>'user']);
-        Permission::create(['name'=>'Delete-Wallets', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Create-Wallets', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Read-Wallets', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Updata-Wallets', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Delete-Wallets', 'guard_name'=>'user']);
+
+        Permission::create(['name'=>'Create-Debits', 'guard_name'=>'user']);
+        Permission::create(['name'=>'Read-Debits', 'guard_name'=>'user']);
+        Permission::create(['name'=>'Updata-Debits', 'guard_name'=>'user']);
+        Permission::create(['name'=>'Delete-Debits', 'guard_name'=>'user']);
 
         // Permission::create(['name'=>'Create-', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Read-', 'guard_name'=>'admin']);

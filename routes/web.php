@@ -7,6 +7,10 @@ use App\Http\Controllers\spatie\AdminRoleController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CurrencyContoroller;
+use App\Http\Controllers\DebitController;
+use App\Http\Controllers\DebitUserController;
+use App\Http\Controllers\DebtController;
+use App\Http\Controllers\DebtUserController;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\ProfessionController;
@@ -52,6 +56,9 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
 });
 
 Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
+    Route::resource('wallets', WalletController::class);
+    Route::resource('debts', DebtController::class);
+    Route::resource('debts-user', DebtUserController::class);
     Route::resource('users', UserController::class);
     Route::get('logout', [UserAuthController::class,'logout'])->name('user.logout');
 
@@ -72,7 +79,6 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
     Route::resource('currency', CurrencyContoroller::class);
     Route::resource('income_type', IncomeTypeController::class);
     Route::resource('expense_type', ExpenseTypeController::class);
-    Route::resource('wallets', WalletController::class);
 
 });
 

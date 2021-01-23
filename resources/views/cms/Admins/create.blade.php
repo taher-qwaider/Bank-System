@@ -62,7 +62,6 @@
                     <input type="tel" class="form-control" id="mobile"  placeholder="Enter mobile">
                 </div>
                 <div class="col-sm-6">
-                    <!-- radio -->
                     <label>Gender :</label>
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">

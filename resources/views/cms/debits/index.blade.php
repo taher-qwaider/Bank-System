@@ -1,10 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Walets')
+@section('title', 'Debts')
 
 
-@section('page-title', 'Walets')
+@section('page-title', 'Debts')
 @section('home-page', 'home')
-@section('sub-page', 'Wallet')
+@section('sub-page', 'Debt')
 @section('styles')
      <!-- Toastr -->
      <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
@@ -19,7 +19,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Walets</h3>
+                  <h3 class="card-title">Debts</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -37,31 +37,37 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Active</th>
-                        <th>Total</th>
+                        <th>User Debt</th>
                         <th>Currency</th>
-                        <th>Created_at</th>
-                        <th>Updated_at</th>
+                        <th>Total</th>
+                        <th>Remain</th>
+                        <th>Debt Type</th>
+                        <th>Payment Type</th>
+                        <th>Description</th>
+                        <th>Date</th>
                         <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($wallets as $wallet)
+                        @foreach($debts as $debt)
                         <tr>
-                            <td>{{ $wallet->id }}</td>
-                            <td>{{ $wallet->name }}</td>
-                            <td><span @if($wallet->active) class="badge bg-success" @else class="badge bg-danger" @endif >{{ $wallet->status }}</span></td>
-                            <td><span class="badge bg-info" >{{ $wallet->total }}</span></td>
-                            <td><span class="badge bg-info" >{{ $wallet->currency->name }}</span></td>
-                            <td>{{ $wallet->created_at->format('Y-m-d')  }}</td>
-                            <td>{{ $wallet->updated_at->format('Y-m-d')  }}</td>
+                            {{-- {{ dd($debt) }} --}}
+                            <td>{{ $debt->id }}</td>
+                            <td>{{ $debt->user_debt->full_name }}</td>
+                            <td><span class="badge bg-info" >Dollar</span></td>
+                            {{-- <td><span class="badge bg-info" >{{ $debt->currency->name }}</span></td> --}}
+                            <td><span class="badge bg-info" >{{ $debt->total }}</span></td>
+                            <td><span class="badge bg-info" >{{ $debt->remain }}</span></td>
+                            <td><span class="badge bg-success" >{{ $debt->debt_type }}</span></td>
+                            <td><span class="badge bg-success" >{{ $debt->payment_type }}</span></td>
+                            <td>{{ $debt->description }}</td>
+                            <td>{{ $debt->date  }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('wallets.edit', $wallet->id) }}" class="btn btn-info">
+                                <a href="{{ route('debts.edit', $debt->id) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>&nbsp;
-                                <a href="#" onclick="preformedDelete({{ $wallet->id }}, this)" class="btn btn-danger">
+                                <a href="#" onclick="preformedDelete({{ $debt->id }}, this)" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i> Delete
                                 </a>
                                 </div>
@@ -72,7 +78,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{-- {{ $wallets->links() }} --}}
+                        {{ $debts->links() }}
                 </div>
               </div>
               <!-- /.card -->
@@ -107,7 +113,7 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/user/wallets/'+id)
+            axios.delete('/cms/user/debts/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);

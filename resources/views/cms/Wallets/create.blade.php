@@ -77,7 +77,7 @@
     </script>
     <script>
         function performSave(){
-            axios.post('/cms/admin/wallets', {
+            axios.post('/cms/user/wallets', {
             name: document.getElementById('wallet_name').value,
             total: document.getElementById('total').value,
             currency_id: document.getElementById('currecny').value,

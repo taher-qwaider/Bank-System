@@ -33,6 +33,7 @@
                         <label>Gard :</label>
                         <select class="form-control guards" id="guard" style="width: 100%;">
                                 <option value="admin" @if ($permission->guard_name == "admin") selected @endif>Admin</option>
+                                <option value="user" @if ($permission->guard_name == "user") selected @endif>User</option>
                         </select>
                       </div>
                     <div class="form-group">

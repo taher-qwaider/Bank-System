@@ -418,6 +418,35 @@
                 </ul>
             </li>
           @endcanany
+          @canany(['Read-Debts', 'Create-Debts'])
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-hand-holding-usd"></i>
+                <p>
+                    Debits
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                @can('Read-Debts')
+                    <li class="nav-item">
+                        <a href="{{ route('debts.index') }}" class="nav-link">
+                            <i class="fas fa-list nav-icon"></i>
+                        <p>Index</p>
+                        </a>
+                    </li>
+                @endcan
+                @can('Create-Debts')
+                    <li class="nav-item">
+                        <a href="{{ route('debts.create') }}" class="nav-link">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Create</p>
+                        </a>
+                    </li>
+                @endcan
+                </ul>
+            </li>
+          @endcanany
 
           <li class="nav-header">Roles & Permessions</li>
           <li class="nav-item has-treeview">

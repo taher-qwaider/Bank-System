@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Profession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class UserAuthController extends Controller
 {
+    use FileUpload;
     //
     public function showLogin(){
         return response()->view('cms.auth-user.login');
@@ -27,7 +30,7 @@ class UserAuthController extends Controller
             if(Auth::guard('user')->attempt($credentials, $request->get('remember_me'))){
                 return response()->json(['message'=>'Logged in successfuly'], 200);
             }else{
-                return response()->json(['message'=>'Login Failed check the credentials'], 400);
+                return response()->json(['message'=>'Login Failed check the Credentials'], 400);
             }
         }else{
             return response()->json(['message'=>$validator->getMessageBag()->first()], 400);
@@ -42,14 +45,14 @@ class UserAuthController extends Controller
     }
     public function updata_password(Request $request){
         $validator=Validator($request->all(), [
-            'current_password'=>'required|string|password:admin,password',
+            'current_password'=>'required|string|password:user,password',
             'new_password'=>'required|string|confirmed',
             'new_password_confirmation'=>'required|string'
         ]);
         if(!$validator->fails()){
-            $admin=$request->user('admin');
-            $admin->password=Hash::make($request->get('new_password'));
-            $isSaved = $admin->save();
+            $user=$request->user('user');
+            $user->password=Hash::make($request->get('new_password'));
+            $isSaved = $user->save();
             if($isSaved){
                 return response()->json(['message'=>'Password Changed Successfuly'], 200);
             }else{
@@ -62,30 +65,41 @@ class UserAuthController extends Controller
     public function edit_profile(Request $request){
         $cities =City::where('active', true)->get();
         $professions =Profession::where('active', true)->get();
-        return response()->view('cms.auth-user.edit-profile', ['cities'=>$cities, 'professions'=>$professions, 'admin'=>$request->user('user')]);
+        return response()->view('cms.auth-user.edit-profile', ['cities'=>$cities, 'professions'=>$professions, 'user'=>$request->user('user')]);
     }
     public function updata_profile(Request $request){
-        $admin =$request->user('user');
+        $user =$request->user('user');
         $validator = Validator($request->all(), [
             'city_id' => 'required|integer|exists:cities,id',
             'first_name' => 'required|string|min:2|max:30',
             'last_name' => 'required|string|min:2|max:30',
-            'email' => 'required|email|unique:admins,email, ' .$admin->id,
-            'mobile' => 'required|numeric|digits:10|unique:admins,mobile, ' .$admin->id,
+            'email' => 'required|email|unique:users,email, ' .$user->id,
+            'mobile' => 'required|numeric|digits:10|unique:users,mobile, ' .$user->id,
+            'id_number' => 'required|numeric|digits:9',
             'gender' => 'required|in:M,F|string',
             'profession_id'=>'required|integer|exists:professions,id'
         ]);
 
         if (!$validator->fails()) {
-            $admin->first_name = $request->get('first_name');
-            $admin->last_name = $request->get('last_name');
-            $admin->email = $request->get('email');
-            $admin->mobile = $request->get('mobile');
-            $admin->city_id = $request->get('city_id');
-            $admin->gender = $request->get('gender');
-            $admin->profession_id=$request->get('profession_id');
-            $isSaved = $admin->save();
-            return response()->json(['message' => $isSaved ? 'Admin Updataed successfully' : 'Failed to Updata admin'], $isSaved ? 200 : 400);
+            $user->first_name = $request->get('first_name');
+            $user->last_name = $request->get('last_name');
+            $user->email = $request->get('email');
+            $user->mobile = $request->get('mobile');
+            $user->city_id = $request->get('city_id');
+            $user->id_number = $request->get('id_number');
+            $user->gender = $request->get('gender');
+            $user->profession_id=$request->get('profession_id');
+            if ($request->hasFile('image')) {
+                $isDeleted = Storage::disk('public')->delete($user->image);
+                if ($isDeleted) {
+                    $this->uploadFile($request->file('image'), 'images/users/', 'public', 'user_'. $user->first_name. '_' . time());
+                    $user->image = $this->filePath;
+                }else{
+                    return response()->json(['message' => 'Failed to Upload image'], 400);
+                }
+            }
+            $isSaved = $user->save();
+            return response()->json(['message' => $isSaved ? 'User Profile Updated successfully' : 'Failed to Updatad User Profile'], $isSaved ? 200 : 400);
         } else {
             return response()->json(['message' => $validator->getMessageBag()->first()], 400);
         }

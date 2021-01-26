@@ -160,7 +160,7 @@
       <!-- Sidebar user (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          {{-- <img src="" class="img-circle elevation-2" alt="User Image"> --}}
+          <img src="{{ Storage::url(Auth::user()->image) }}" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="{{ route('edit-profile') }}" class="d-block">{{ Auth::user()->full_name }}</a>
@@ -498,20 +498,38 @@
           </li>
           <li class="nav-header">Settings</li>
           <li class="nav-item">
-            <a href="{{ route('edit-profile') }}" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                Edit Profile
-              </p>
-            </a>
+            @if (Auth::guard('admin')->check())
+                <a href="{{ route('edit-profile') }}" class="nav-link">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>
+                        Edit Profile
+                    </p>
+                </a>
+            @else
+                <a href="{{ route('user.edit-profile') }}" class="nav-link">
+                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <p>
+                        Edit Profile
+                    </p>
+                </a>
+            @endif
           </li>
           <li class="nav-item">
-            <a href="{{ route('edit-password') }}" class="nav-link">
-                <i class="nav-icon fas fa-lock"></i>
-              <p>
-                Change password
-              </p>
-            </a>
+            @if (Auth::guard('admin')->check())
+                <a href="{{ route('edit-password') }}" class="nav-link">
+                    <i class="nav-icon fas fa-lock"></i>
+                    <p>
+                        Change password
+                    </p>
+                </a>
+            @else
+                <a href="{{ route('user.edit-password') }}" class="nav-link">
+                    <i class="nav-icon fas fa-lock"></i>
+                    <p>
+                        Change password
+                    </p>
+                </a>
+            @endif
           </li>
           <li class="nav-item">
               @if (Auth::guard('admin')->check())

@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Profession;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class AdminAuthController extends Controller
 {
+    use FileUpload;
     //
     public function showLogin(){
         return response()->view('cms.auth.login');
@@ -27,7 +30,7 @@ class AdminAuthController extends Controller
             if(Auth::guard('admin')->attempt($credentials, $request->get('remember_me'))){
                 return response()->json(['massage'=>'Logged in successfuly'], 200);
             }else{
-                return response()->json(['massage'=>'Login Failed check the credentials'], 400);
+                return response()->json(['massage'=>'Login Failed check the Credentials'], 400);
             }
         }else{
             return response()->json(['massage'=>$validator->getMessageBag()->first()], 400);
@@ -67,15 +70,15 @@ class AdminAuthController extends Controller
     public function updata_profile(Request $request){
         $admin =$request->user('admin');
         $validator = Validator($request->all(), [
-            'city_id' => 'required|integer|exists:cities,id',
+            'city_id' => 'required|exists:cities,id',
+            'image'=>'image|mimes:png,jpg,jpeg|max:2048',
             'first_name' => 'required|string|min:2|max:30',
             'last_name' => 'required|string|min:2|max:30',
             'email' => 'required|email|unique:admins,email, ' .$admin->id,
             'mobile' => 'required|numeric|digits:10|unique:admins,mobile, ' .$admin->id,
             'gender' => 'required|in:M,F|string',
-            'profession_id'=>'required|integer|exists:professions,id'
+            'profession_id'=>'required|exists:professions,id'
         ]);
-
         if (!$validator->fails()) {
             $admin->first_name = $request->get('first_name');
             $admin->last_name = $request->get('last_name');
@@ -84,6 +87,15 @@ class AdminAuthController extends Controller
             $admin->city_id = $request->get('city_id');
             $admin->gender = $request->get('gender');
             $admin->profession_id=$request->get('profession_id');
+            if ($request->hasFile('image')) {
+                $isDeleted = Storage::disk('public')->delete($admin->image);
+                if ($isDeleted) {
+                    $this->uploadFile($request->file('image'), 'images/admins/', 'public', 'admin_'. $admin->first_name. '_' . time());
+                    $admin->image = $this->filePath;
+                }else{
+                    return response()->json(['message' => 'Failed to Upload image'], 400);
+                }
+            }
             $isSaved = $admin->save();
             return response()->json(['message' => $isSaved ? 'Admin Updataed successfully' : 'Failed to Updata admin'], $isSaved ? 200 : 400);
         } else {

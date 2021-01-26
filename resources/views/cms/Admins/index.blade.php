@@ -45,6 +45,7 @@
                         <th>gender</th>
                         <th>Permissions</th>
                         <th>Role</th>
+                        <th>Is Deleted</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
@@ -66,19 +67,26 @@
                             <td>
                                 <a href="{{ route('admin.role.index', $admin->id) }}" class="btn btn-info">{{ $admin->roles_count }} / Roles <i class="fas fa-user-tie"></i></a>
                             </td>
+                            <td>
+                                <span @if($admin->trashed())  class="badge bg-danger"  @else  class="badge bg-success" @endif>{{ $admin->trashed() ? 'true': 'false' }}</span>
+                            </td>
                             <td>{{ $admin->created_at->format('Y-m-d')  }}</td>
                             <td>{{ $admin->updated_at->format('Y-m-d')  }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-info">
-                                    <i class="fas fa-edit"></i> Edit
-                                </a>&nbsp;
-                                @if (Auth::user('admin')->id != $admin->id)
-                                    <a href="#" onclick="preformedDelete({{ $admin->id }}, this)" class="btn btn-danger">
-                                        <i class="fas fa-trash-alt"></i> Delete
-                                    </a>
-                                @endif
-
+                                    <a href="{{ route('admins.edit', $admin->id) }}" class="btn btn-info">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </a>&nbsp;
+                                    @if ((Auth::user('admin')->id != $admin->id) && (!$admin->trashed()))
+                                        <a href="#" onclick="preformedDelete({{ $admin->id }})" class="btn btn-danger">
+                                            <i class="fas fa-trash-alt"></i> Delete
+                                        </a>
+                                    @endif
+                                    @if ((Auth::user('admin')->id != $admin->id) && ($admin->trashed()))
+                                        <a href="#" onclick="restore({{ $admin->id }})" class="btn btn-primary">
+                                            <i class="fas fa-recycle"></i> Restore
+                                        </a>
+                                    @endif
                                 </div>
                             </td>
                           @endforeach
@@ -103,10 +111,10 @@
     <!-- Toastr -->
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
-        function preformedDelete(id, refernce){
-            showAlert(id, refernce);
+        function preformedDelete(id){
+            showAlert(id);
         }
-        function showAlert(id, refernce){
+        function showAlert(id){
             Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -117,29 +125,37 @@
             confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    destroy(id, refernce);
+                    destroy(id);
                 }
             })
         }
-        function destroy(id, refernce){
-            axios.delete('/cms/admin/admins/'+id)
+        function restore(id){
+            axios.delete('/cms/admin/admins/'+id+'/restore')
             .then(function (response) {
-                // handle success
                 console.log(response.data);
-                refernce.closest('tr').remove();
                 responsAlert(response.data, true);
             })
             .catch(function (error) {
-                // handle error
+                console.log(error.response.data);
+                responsAlert(error.response.data, false);
+            })
+        }
+        function destroy(id){
+            axios.delete('/cms/admin/admins/'+id)
+            .then(function (response) {
+                console.log(response.data);
+                responsAlert(response.data, true);
+            })
+            .catch(function (error) {
                 console.log(error.response.data);
                 responsAlert(error.response.data, false);
             })
         }
         function responsAlert(data, status){
             if(status){
-                toastr.success(data.massege);
+                toastr.success(data.message);
             }else{
-                toastr.error(data.massege);
+                toastr.error(data.message);
             }
 
         }

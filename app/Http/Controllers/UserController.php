@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    use FileUpload;
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +21,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users=User::withCount('permissions')->with(['city', 'profession'])->paginate(10);
+        $users=User::withCount('permissions')->withTrashed()->with(['city', 'profession'])->paginate(10);
         return response()->view('cms.User.index', ['users'=>$users]);
     }
 
@@ -51,11 +50,10 @@ class UserController extends Controller
         $validator = Validator($request->all(), [
             'city_id' => 'required|integer|exists:cities,id',
             'first_name' => 'required|string|min:2|max:30',
-            'image'=>'required|image|mimes:png,jpg,jpeg|max:2048',
             'last_name' => 'required|string|min:2|max:30',
             'email' => 'required|email|unique:users,email',
             'mobile' => 'required|numeric|digits:10|unique:users,mobile',
-            'id_number' => 'numeric|digits:9',
+            'id_number' => 'required|numeric|digits:9',
             'gender' => 'required|in:M,F|string',
             'profession_id'=>'required|integer|exists:professions,id',
         ]);
@@ -71,8 +69,6 @@ class UserController extends Controller
             $user->gender = $request->get('gender');
             $user->password = Hash::make('password$');
             $user->profession_id=$request->get('profession_id');
-            $this->uploadFile($request->file('image'), 'images/users/', 'public', $user->first_name. '_' . time());
-            $user->image=Storage::url($this->filePath);
             $isSaved = $user->save();
             if($isSaved){
                 event(new Registered($user));
@@ -137,7 +133,6 @@ class UserController extends Controller
             'profession_id'=>'required|integer|exists:professions,id',
         ]);
         if (!$validator->fails()) {
-
             $user->first_name = $request->get('first_name');
             $user->last_name = $request->get('last_name');
             $user->email = $request->get('email');
@@ -163,10 +158,27 @@ class UserController extends Controller
     {
         //
         $user = User::findOrFail($id);
-        // $isDeleted = Storage::disk('public')->delete($user->image);
-        $isDeleted = Storage::delete('adsds_1610458448.jpg');
-        if(!$isDeleted){
-            $isDeleted=$user->delete();
+        $isDeleted=$user->delete();
+        if($isDeleted){
+            return response()->json(['message'=> 'User Deleted successfuly' ], 200);
+        }else{
+            return response()->json(['message'=> 'Faild to delete User'], 400);
+        }
+    }
+    public function restore($id){
+        $user = User::withTrashed()->findOrFail($id);
+        $isRestored = $user->restore();
+        if($isRestored){
+            return response()->json(['message'=> 'User Restored successfuly'], 200);
+        }else{
+            return response()->json(['message'=> 'Failed to Restored User'], 400);
+        }
+    }
+    public function forceDelete($id){
+        $user = User::withTrashed()->findOrFail($id);
+        $isDeleted = Storage::disk('public')->delete($user->image);
+        if($isDeleted){
+            $isDeleted = $user->forceDelete();
             return response()->json(['message'=> $isDeleted ? 'User Deleted successfuly' : 'Faild to delete User'], $isDeleted ? 200:400);
         }else{
             return response()->json(['message'=> 'Faild to delete User image'], 400);

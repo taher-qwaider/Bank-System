@@ -52,7 +52,7 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
     Route::post('users/{user}/permissions', [UserPermissionController::class, 'store']);
 
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
-    Route::put('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
+    Route::post('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
 });
 
 Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
@@ -60,13 +60,15 @@ Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
     Route::resource('debts', DebtController::class);
     Route::resource('debts-user', DebtUserController::class);
     Route::resource('users', UserController::class);
+    Route::delete('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('users/{user}/forcedelete', [UserController::class, 'forceDelete'])->name('users.forcedelete');
     Route::get('logout', [UserAuthController::class,'logout'])->name('user.logout');
 
     Route::get('edit-profile', [UserAuthController::class, 'edit_profile'])->name('user.edit-profile');
-    Route::put('updata-profile', [UserAuthController::class, 'updata_profile'])->name('user.updata-profile');
+    Route::post('updata-profile', [UserAuthController::class, 'updata_profile'])->name('user.updata-profile');
 
-    Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('edit-password');
-    Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('updata-password');
+    Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('user.edit-password');
+    Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('user.updata-password');
 });
 
 
@@ -76,6 +78,8 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
     Route::resource('cities', CityController::class);
     Route::resource('Profession', ProfessionController::class);
     Route::resource('admins', AdminController::class);
+    Route::delete('admins/{admin}/restore', [AdminController::class, 'restore'])->name('admins.restore');
+    Route::delete('admins/{admin}/forcedelete', [AdminController::class, 'forceDelete'])->name('admins.forcedelete');
     Route::resource('currency', CurrencyContoroller::class);
     Route::resource('income_type', IncomeTypeController::class);
     Route::resource('expense_type', ExpenseTypeController::class);

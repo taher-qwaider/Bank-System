@@ -54,15 +54,6 @@
                     <input type="text" class="form-control" id="last_name" placeholder="Enter Last Name">
                 </div>
                 <div class="form-group">
-                    <label for="user-image">Your Image</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="image" id="user-image">
-                        <label class="custom-file-label" for="user-image">Choose Image</label>
-                      </div>
-                    </div>
-                  </div>
-                <div class="form-group">
                     <label for="email">Email :</label>
                     <input type="email" class="form-control" id="email" placeholder="Enter email">
                 </div>
@@ -105,8 +96,6 @@
 </section>
 @endsection
 @section('scripts')
-    <!-- bs-custom-file-input -->
-    <script src="{{ asset('cms/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('cms/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Toastr -->
@@ -126,7 +115,6 @@
             var formData=new FormData();
             formData.append('first_name', document.getElementById('first_name').value);
             formData.append('last_name', document.getElementById('last_name').value);
-            formData.append('image', document.getElementById('user-image').files[0]);
             formData.append('email', document.getElementById('email').value);
             formData.append('mobile', document.getElementById('mobile').value);
             formData.append('city_id', document.getElementById('city').value);

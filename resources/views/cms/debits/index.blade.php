@@ -54,8 +54,8 @@
                             {{-- {{ dd($debt) }} --}}
                             <td>{{ $debt->id }}</td>
                             <td>{{ $debt->user_debt->full_name }}</td>
-                            <td><span class="badge bg-info" >Dollar</span></td>
-                            {{-- <td><span class="badge bg-info" >{{ $debt->currency->name }}</span></td> --}}
+                            {{-- <td><span class="badge bg-info" >Dollar</span></td>class="btn btn-block btn-primary btn-lg" --}}
+                            <td><span class="badge bg-primary bg-purple color-palette" >{{ $debt->currency->name }}</span></td>
                             <td><span class="badge bg-info" >{{ $debt->total }}</span></td>
                             <td><span class="badge bg-info" >{{ $debt->remain }}</span></td>
                             <td><span class="badge bg-success" >{{ $debt->debt_type }}</span></td>

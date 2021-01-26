@@ -75,9 +75,18 @@
                     <input type="text" class="form-control" id="description"  placeholder="Enter Description">
                 </div>
                 <div class="form-group">
-                    <label for="data">Data :</label>
-                    <input type="date" class="form-control" id="data"  placeholder="Enter data">
+                    <label for="date">Date :</label>
+                    <input type="date" class="form-control" id="date"  placeholder="Enter date">
                 </div>
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="image" id="image">
+                        <label class="custom-file-label" for="image">Choose Image</label>
+                      </div>
+                    </div>
+                  </div>
                 <!-- /.card-body -->
               <div class="card-footer">
                 <button type="button" onclick="performSave()" class="btn btn-primary">Save</button>
@@ -90,6 +99,8 @@
 </section>
 @endsection
 @section('scripts')
+    <!-- bs-custom-file-input -->
+    <script src="{{ asset('cms/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('cms/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Toastr -->
@@ -108,19 +119,25 @@
         $('.debt_users').select2({
         theme: 'bootstrap4'
         });
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
     </script>
     <script>
         function performSave(){
-            axios.post('/cms/user/debts', {
-            debt_user_id: document.getElementById('debt_user').value,
-            currency_id: document.getElementById('currency').value,
-            total: document.getElementById('total').value,
-            remain: document.getElementById('remain').value,
-            date: document.getElementById('data').value,
-            debt_type: document.getElementById('debt_type').value,
-            payment_type: document.getElementById('payment_type').value,
-            description: document.getElementById('description').value,
-        })
+            var formData=new FormData();
+            formData.append('debt_user_id', document.getElementById('debt_user').value);
+            formData.append('currency_id', document.getElementById('currency').value);
+            formData.append('total', document.getElementById('total').value);
+            formData.append('date', document.getElementById('date').value);
+            formData.append('debt_type', document.getElementById('debt_type').value);
+            formData.append('payment_type', document.getElementById('payment_type').value);
+            formData.append('description', document.getElementById('description').value);
+            formData.append('remain', document.getElementById('remain').value);
+            formData.append('image', document.getElementById('image').files[0]);
+
+            axios.post('/cms/user/debts',formData
+            )
         .then(function (response) {
             console.log(response);
             showConfirm(response.data.message, true);

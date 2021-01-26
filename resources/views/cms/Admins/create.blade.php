@@ -39,19 +39,19 @@
                   </div>
                   <div class="form-group">
                     <label>Profession :</label>
-                    <select class="form-control cities" id="profession" style="width: 100%;">
+                    <select class="form-control professions" id="profession" style="width: 100%;">
                         @foreach ($professions as $profession)
                             <option value="{{ $profession->id }}">{{ $profession->name }}</option>
                         @endforeach
                     </select>
                   </div>
                 <div class="form-group">
-                <label for="fName">First Name :</label>
-                <input type="text" class="form-control" id="fName" placeholder="Enter First Name">
+                <label for="first_name">First Name :</label>
+                <input type="text" class="form-control" id="first_name" placeholder="Enter First Name">
                 </div>
                 <div class="form-group">
-                    <label for="lName">Last Name :</label>
-                    <input type="text" class="form-control" id="lName" placeholder="Enter Last Name">
+                    <label for="last_name">Last Name :</label>
+                    <input type="text" class="form-control" id="last_name" placeholder="Enter Last Name">
                 </div>
                 <div class="form-group">
                     <label for="email">Email :</label>
@@ -61,6 +61,15 @@
                     <label for="mobile">Mobile :</label>
                     <input type="tel" class="form-control" id="mobile"  placeholder="Enter mobile">
                 </div>
+                <div class="form-group">
+                    <label for="admin-image">Your Image</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="image" id="admin-image">
+                        <label class="custom-file-label" for="user-image">Choose Image</label>
+                      </div>
+                    </div>
+                  </div>
                 <div class="col-sm-6">
                     <label>Gender :</label>
                     <div class="form-group clearfix">
@@ -91,6 +100,8 @@
 </section>
 @endsection
 @section('scripts')
+    <!-- bs-custom-file-input -->
+    <script src="{{ asset('cms/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('cms/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Toastr -->
@@ -100,18 +111,27 @@
         $('.cities').select2({
         theme: 'bootstrap4'
         });
+        $('.professions').select2({
+        theme: 'bootstrap4'
+        });
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
     </script>
     <script>
         function performSave(){
-            axios.post('/cms/admin/admins', {
-            first_name: document.getElementById('fName').value,
-            last_name: document.getElementById('lName').value,
-            email: document.getElementById('email').value,
-            mobile: document.getElementById('mobile').value,
-            city_id: document.getElementById('city').value,
-            profession_id: document.getElementById('profession').value,
-            gender: document.getElementById('male').checked ? 'M':'F',
-        })
+            var formData=new FormData();
+            formData.append('first_name', document.getElementById('first_name').value);
+            formData.append('last_name', document.getElementById('last_name').value);
+            formData.append('image', document.getElementById('admin-image').files[0]);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('mobile', document.getElementById('mobile').value);
+            formData.append('city_id', document.getElementById('city').value);
+            formData.append('profession_id', document.getElementById('profession').value);
+            formData.append('gender', document.getElementById('male').checked ? 'M':'F');
+
+        axios.post('/cms/admin/admins' ,formData
+        )
         .then(function (response) {
             console.log(response);
             showConfirm(response.data.message, true);

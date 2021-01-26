@@ -17,7 +17,7 @@ class CreateDebtsTable extends Migration
             $table->id();
             $table->float('total');
             $table->float('remain');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->enum('debt_type', ['Creditor', 'Debtor']);
             $table->enum('payment_type', ['Single', 'Multi']);
             $table->string('description');
@@ -25,6 +25,9 @@ class CreateDebtsTable extends Migration
 
             $table->foreignId('debt_user_id');
             $table->foreign('debt_user_id')->on('debt_users')->references('id');
+
+            $table->foreignId('currency_id');
+            $table->foreign('currency_id')->on('currencies')->references('id');
 
             $table->timestamps();
         });

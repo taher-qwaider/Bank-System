@@ -1,9 +1,9 @@
 @extends('cms.parent')
-@section('title', 'Updata Admin')
+@section('title', 'Updata User Profile')
 
-@section('page-title', 'Admin')
+@section('page-title', 'User Profile')
 @section('home-page', 'Home')
-@section('sub-page', 'admin')
+@section('sub-page', 'User')
 
 @section('styles')
       <!-- Select2 -->
@@ -22,18 +22,18 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Updata Admin</h3>
+              <h3 class="card-title">Updata User Profile</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="updata_admin">
+            <form id="updata_user">
                 @csrf
               <div class="card-body">
                 <div class="form-group">
                     <label>City :</label>
                     <select class="form-control cities" id="city" style="width: 100%;">
                         @foreach ($cities as $city)
-                            <option value="{{ $city->id }}" @if($city->id == $admin->city_id) selected @endif>{{ $city->name }}</option>
+                            <option value="{{ $city->id }}" @if($city->id == $user->city_id) selected @endif>{{ $city->name }}</option>
                         @endforeach
                     </select>
                   </div>
@@ -41,37 +41,50 @@
                     <label>Profession :</label>
                     <select class="form-control profession" id="profession" style="width: 100%;">
                         @foreach ($professions as $profession)
-                            <option value="{{ $profession->id }}" @if($profession->id == $admin->profession_id) selected @endif>{{ $profession->name }}</option>
+                            <option value="{{ $profession->id }}" @if($profession->id == $user->profession_id) selected @endif>{{ $profession->name }}</option>
                         @endforeach
                     </select>
                   </div>
                 <div class="form-group">
-                <label for="fName">First Name :</label>
-                <input type="text" class="form-control" id="fName" value="{{ $admin->first_name }}" placeholder="Enter First Name">
+                <label for="first_name">First Name :</label>
+                <input type="text" class="form-control" id="first_name" value="{{ $user->first_name }}">
                 </div>
                 <div class="form-group">
-                    <label for="lName">Last Name :</label>
-                    <input type="text" class="form-control" id="lName" value="{{ $admin->last_name }}" placeholder="Enter Last Name">
+                    <label for="last_name">Last Name :</label>
+                    <input type="text" class="form-control" id="last_name" value="{{ $user->last_name }}">
                 </div>
                 <div class="form-group">
                     <label for="email">Email :</label>
-                    <input type="email" class="form-control" id="email" value="{{ $admin->email }}" placeholder="Enter email">
+                    <input type="email" class="form-control" id="email" value="{{ $user->email }}">
                 </div>
                 <div class="form-group">
                     <label for="mobile">Mobile :</label>
-                    <input type="tel" class="form-control" id="mobile" value="{{ $admin->mobile }}"  placeholder="Enter mobile">
+                    <input type="tel" class="form-control" id="mobile" value="{{ $user->mobile }}">
                 </div>
+                <div class="form-group">
+                    <label for="id_number">Id Number :</label>
+                    <input type="number" class="form-control" id="id_number" value="{{ $user->id_number }}">
+                </div>
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="image">
+                        <label class="custom-file-label" for="image">Choose Image</label>
+                      </div>
+                    </div>
+                  </div>
                 <div class="col-sm-6">
                     <!-- radio -->
                     <label>Gender :</label>
                     <div class="form-group clearfix">
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="male" name="gender" @if ($admin->gender == 'M') checked @endif>
+                        <input type="radio" id="male" name="gender" @if ($user->gender == 'M') checked @endif>
                         <label for="male">Male
                         </label>
                       </div>
                       <div class="icheck-primary d-inline">
-                        <input type="radio" id="female" name="gender" @if ($admin->gender == 'F') checked @endif>
+                        <input type="radio" id="female" name="gender" @if ($user->gender == 'F') checked @endif>
                         <label for="female">
                           Female
                         </label>
@@ -92,6 +105,8 @@
 </section>
 @endsection
 @section('scripts')
+    <!-- bs-custom-file-input -->
+    <script src="{{ asset('cms/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
     <!-- Select2 -->
     <script src="{{ asset('cms/plugins/select2/js/select2.full.min.js') }}"></script>
     <!-- Toastr -->
@@ -104,18 +119,25 @@
         $('.profession').select2({
         theme: 'bootstrap4'
         });
+        $(document).ready(function () {
+            bsCustomFileInput.init();
+        });
     </script>
     <script>
         function performupdata(){
-            axios.put('/cms/admin/updata-profile', {
-            first_name: document.getElementById('fName').value,
-            last_name: document.getElementById('lName').value,
-            email: document.getElementById('email').value,
-            mobile: document.getElementById('mobile').value,
-            city_id: document.getElementById('city').value,
-            profession_id: document.getElementById('profession').value,
-            gender: document.getElementById('male').checked ? 'M':'F',
-        })
+            var formData=new FormData();
+            formData.append('first_name', document.getElementById('first_name').value);
+            formData.append('last_name', document.getElementById('last_name').value);
+            formData.append('image', document.getElementById('image').files[0]);
+            formData.append('email', document.getElementById('email').value);
+            formData.append('mobile', document.getElementById('mobile').value);
+            formData.append('id_number', document.getElementById('id_number').value);
+            formData.append('city_id', document.getElementById('city').value);
+            formData.append('profession_id', document.getElementById('profession').value);
+            formData.append('gender', document.getElementById('male').checked ? 'M':'F');
+
+        axios.post('/cms/user/updata-profile' ,formData
+        )
         .then(function (response) {
             console.log(response);
             showConfirm(response.data.message, true);

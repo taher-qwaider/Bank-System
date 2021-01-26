@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\FileUpload;
 use App\Mail\AdminWellcomeEmail;
 use App\Models\Admin;
 use App\Models\City;
@@ -10,10 +11,12 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Validator;
 
 class AdminController extends Controller
 {
+    use FileUpload;
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +25,7 @@ class AdminController extends Controller
     public function index()
     {
         //paginate
-        $admins=Admin::withCount(['permissions', 'roles'])->with(['city', 'profession'])->paginate(10);
+        $admins=Admin::withCount(['permissions', 'roles'])->withTrashed()->with(['city', 'profession'])->paginate(10);
         return response()->view('cms.Admins.index', ['admins'=>$admins]);
     }
 
@@ -51,6 +54,7 @@ class AdminController extends Controller
         $validator = Validator($request->all(), [
             'city_id' => 'required|integer|exists:cities,id',
             'first_name' => 'required|string|min:2|max:30',
+            'image'=>'image|mimes:png,jpg,jpeg|max:2048',
             'last_name' => 'required|string|min:2|max:30',
             'email' => 'required|email|unique:admins,email',
             'mobile' => 'required|numeric|digits:10|unique:admins,mobile',
@@ -68,6 +72,10 @@ class AdminController extends Controller
             $admin->gender = $request->get('gender');
             $admin->password = Hash::make('password$');
             $admin->profession_id=$request->get('profession_id');
+            if ($request->hasFile('image')) {
+                $this->uploadFile($request->file('image'), 'images/admins/', 'public', 'admin_' . time());
+                $admin->image = $this->filePath;
+            }
             $isSaved = $admin->save();
             if($isSaved){
                 // Mail::to($admin)->queue(new AdminWellcomeEmail($admin));
@@ -151,11 +159,31 @@ class AdminController extends Controller
     public function destroy($id)
     {
         //
-        $isDeleted = Admin::destroy($id);
+        $admin = Admin::findOrFail($id);
+        $isDeleted=$admin->delete();
         if($isDeleted){
-            return response()->json(['massege'=>'Admin Deleted successfuly'], 202);
+            return response()->json(['message'=> 'Admin Deleted successfuly' ], 200);
         }else{
-            return response()->json(['massege'=>'Failed to delete Admin'], 400);
+            return response()->json(['message'=> 'Faild to delete Admin'], 400);
+        }
+    }
+    public function restore($id){
+        $admin = Admin::withTrashed()->findOrFail($id);
+        $isRestored = $admin->restore();
+        if($isRestored){
+            return response()->json(['message'=> 'Admin Restored successfuly'], 200);
+        }else{
+            return response()->json(['message'=> 'Failed to Restored Admin'], 400);
+        }
+    }
+    public function forceDelete($id){
+        $admin = Admin::withTrashed()->findOrFail($id);
+        $isDeleted = Storage::disk('public')->delete($admin->image);
+        if($isDeleted){
+            $isDeleted = $admin->forceDelete();
+            return response()->json(['message'=> $isDeleted ? 'Admin Deleted successfuly' : 'Faild to delete Admin'], $isDeleted ? 200:400);
+        }else{
+            return response()->json(['message'=> 'Faild to delete Admin image'], 400);
         }
     }
 }

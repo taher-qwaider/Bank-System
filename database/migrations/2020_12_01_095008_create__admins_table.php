@@ -21,6 +21,7 @@ class CreateAdminsTable extends Migration
             $table->string('last_name', 45);
             $table->string('email', 45)->unique();
             $table->string('mobile', 45)->unique();
+            $table->string('image')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->enum('gender', ['M', 'F']);
@@ -29,6 +30,7 @@ class CreateAdminsTable extends Migration
             $table->foreignIdFor(Profession::class);
             $table->foreign('profession_id')->on('professions')->references('id')->restrictOnDelete();
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

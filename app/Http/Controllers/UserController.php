@@ -69,6 +69,7 @@ class UserController extends Controller
             $user->gender = $request->get('gender');
             $user->password = Hash::make('password$');
             $user->profession_id=$request->get('profession_id');
+            $user->has_control = false;
             $isSaved = $user->save();
             if($isSaved){
                 event(new Registered($user));

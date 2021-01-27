@@ -20,7 +20,7 @@ class CreateFinancialOperationsTable extends Migration
             $table->string('destination_type', 45);
             $table->bigInteger('destination_id');
             $table->float('amount');
-            $table->tinyInteger('verified');
+            $table->boolean('verified');
             $table->string('verification_code', 45);
             $table->date('data');
             $table->time('time');

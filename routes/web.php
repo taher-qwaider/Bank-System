@@ -22,6 +22,7 @@ use App\Http\Controllers\spatie\RolePermissiomController;
 use App\Http\Controllers\spatie\UserPermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,7 +75,12 @@ Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
 
 Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(function(){
 
-    Route::view('dashboard', 'cms.dashboard')->name('dashboard');
+    Route::get('dashboard', function(){
+        $users_count = User::count();
+        return response()->view('cms.dashboard', [
+            'users_count' => $users_count
+        ]);
+    })->name('dashboard');
     Route::resource('cities', CityController::class);
     Route::resource('Profession', ProfessionController::class);
     Route::resource('admins', AdminController::class);

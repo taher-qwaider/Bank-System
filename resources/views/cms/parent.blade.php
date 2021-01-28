@@ -189,6 +189,7 @@
               </li>
             </ul>
           </li>
+          @canany(['Read-Admin', 'Create-Admin', 'Read-User', 'Create-User'])
           <li class="nav-header">Humarn Resources</li>
           @canany(['Read-Admin', 'Create-Admin'])
             <li class="nav-item has-treeview">
@@ -248,7 +249,8 @@
             </ul>
           </li>
           @endcanany
-
+          @endcanany
+          @canany(['Read-Cities', 'Create-Cities', 'Read-Profission', 'Create-Profission'])
           <li class="nav-header">Content Mangement</li>
           @canany(['Create-Cities', 'Read-Cities'])
             <li class="nav-item has-treeview">
@@ -307,6 +309,7 @@
                 @endcan
                 </ul>
             </li>
+          @endcanany
           @endcanany
           <li class="nav-header">Financial Mangement</li>
           @canany(['Create-Currency', 'Read-Currency'])
@@ -396,7 +399,6 @@
             </ul>
           </li>
           @endcanany
-
           @canany(['Read-Wallets', 'Create-Wallets'])
             <li class="nav-item has-treeview">
                 <a href="#" class="nav-link">
@@ -447,6 +449,35 @@
                 @can('Create-Debts')
                     <li class="nav-item">
                         <a href="{{ route('debts.create') }}" class="nav-link">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Create</p>
+                        </a>
+                    </li>
+                @endcan
+                </ul>
+            </li>
+          @endcanany
+          @canany(['Read-Debt-User', 'Create-Debt-User'])
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-portrait"></i>
+                <p>
+                    Debits Users
+                    <i class="fas fa-angle-left right"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                @can('Read-Debt-User')
+                    <li class="nav-item">
+                        <a href="{{ route('debts-user.index') }}" class="nav-link">
+                            <i class="fas fa-list nav-icon"></i>
+                        <p>Index</p>
+                        </a>
+                    </li>
+                @endcan
+                @can('Create-Debt-User')
+                    <li class="nav-item">
+                        <a href="{{ route('debts-user.create') }}" class="nav-link">
                         <i class="fas fa-plus nav-icon"></i>
                         <p>Create</p>
                         </a>

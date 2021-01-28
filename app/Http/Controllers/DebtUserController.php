@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DebitUsers;
+use App\Models\Debt;
 use App\Models\DebtUsers;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,20 @@ class DebtUserController extends Controller
     public function index()
     {
         //
+        $debt_users = DebtUsers::all();
+        $debts = Debt::all();
+        foreach($debt_users as $debt_user){
+            $count = 0;
+            foreach($debts as $debt){
+                if($debt->user_debt->id == $debt_user->id){
+                    $count++;
+                }
+            }
+            $debt_user->setAttribute('debt_count', $count);
+        }
+        return response()->view('cms.debt-user.index', [
+            'debt_users' => $debt_users
+        ]);
     }
 
     /**
@@ -26,7 +41,7 @@ class DebtUserController extends Controller
     public function create()
     {
         //
-        return response()->view('cms.debits.create-user-debit');
+        return response()->view('cms.debt-user.create');
     }
 
     /**
@@ -83,6 +98,10 @@ class DebtUserController extends Controller
     public function edit($id)
     {
         //
+        $user_debt = DebtUsers::findOrFail($id);
+        return response()->view('cms.debt-user.edit', [
+            'user_debt' =>$user_debt
+        ]);
     }
 
     /**
@@ -95,6 +114,29 @@ class DebtUserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validator = validator($request->all(), [
+            'first_name' => 'required|string|min:2|max:30',
+            'last_name' => 'required|string|min:2|max:30',
+            'telephone' => 'required|numeric|digits:9',
+            'mobile' => 'required|numeric|digits:10|unique:debt_users,mobile, ' . $id,
+            'gender' => 'required|in:M,F|string',
+            'address' => 'required|string',
+
+        ]);
+        if(!$validator->fails()){
+            $debit_user =DebtUsers::findOrFail($id);
+            $debit_user->first_name = $request->get('first_name');
+            $debit_user->last_name = $request->get('last_name');
+            $debit_user->mobile = $request->get('mobile');
+            $debit_user->telephone = $request->get('telephone');
+            $debit_user->address = $request->get('address');
+            $debit_user->gender = $request->get('gender');
+            $isSaved = $debit_user->save();
+            return response()->json(['message' => $isSaved ? 'User Debit Updated successfully' : 'Failed to Update User Debit'], $isSaved ? 200 : 400);
+        }else{
+            return response()->json(['message' => $validator->getMessageBag()->first()], 400);
+
+        }
     }
 
     /**
@@ -106,5 +148,9 @@ class DebtUserController extends Controller
     public function destroy($id)
     {
         //
+        $isDeleted = DebtUsers::destroy($id);
+        return response()->json([
+            'message' => $isDeleted ? 'User Debt Deleted successfuly' : 'Falied to Delete User Debt'
+        ], $isDeleted ? 200 : 400);
     }
 }

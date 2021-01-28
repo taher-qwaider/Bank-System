@@ -12,4 +12,11 @@ class DebtUsers extends Model
     public function getFullNameAttribute(){
         return $this->first_name . ' ' . $this->last_name;
     }
+    public function getStatusAttribute(){
+        if($this->gender == 'M'){
+            return 'Male';
+        }else{
+            return 'Female';
+        }
+    }
 }

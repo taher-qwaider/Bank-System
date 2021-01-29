@@ -90,4 +90,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function subUsers(){
         return $this->hasMany(SubUser::class, 'user_id', 'id');
     }
+    public function debts(){
+        return $this->hasMany(Debt::class, 'user_id', 'id');
+    }
 }

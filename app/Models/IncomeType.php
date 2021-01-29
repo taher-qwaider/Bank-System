@@ -16,4 +16,7 @@ class IncomeType extends Model
             return "Inactive";
         }
     }
+    public function incomes(){
+        return $this->hasMany(Income::class, 'income_type_id', 'id');
+    }
 }

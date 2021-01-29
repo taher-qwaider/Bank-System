@@ -40,6 +40,7 @@
                         <th>Name</th>
                         <th>Details</th>
                         <th>Status</th>
+                        <th>Incomes</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
@@ -52,6 +53,7 @@
                             <td>{{ $type->name }}</td>
                             <td>{{ $type->details }}</td>
                             <td><span @if($type->active) class="badge bg-success" @else  class="badge bg-danger" @endif>{{ $type->status }}</span></td>
+                            <td><a href="{{ route('income_type.income.index', $type->id) }}" class="btn btn-primary">Incomes</a></td>
                             <td>{{ $type->created_at->format('Y-m-d') }}</td>
                             <td>{{ $type->updated_at->format('Y-m-d') }}</td>
                             <td>

@@ -539,14 +539,14 @@
           <li class="nav-item">
             @if (Auth::guard('admin')->check())
                 <a href="{{ route('edit-profile') }}" class="nav-link">
-                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <i class="nav-icon fas fa-user-edit"></i>
                     <p>
                         Edit Profile
                     </p>
                 </a>
             @else
                 <a href="{{ route('user.edit-profile') }}" class="nav-link">
-                    <i class="nav-icon fas fa-sign-out-alt"></i>
+                    <i class="nav-icon fas fa-user-edit"></i>
                     <p>
                         Edit Profile
                     </p>
@@ -645,7 +645,7 @@
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('cms/dist/js/demo.js') }}"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{{ asset('cms/js/axios.min.js') }}"></script>
 
 @yield('scripts')
 </body>

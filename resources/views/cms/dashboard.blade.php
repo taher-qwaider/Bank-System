@@ -3,7 +3,7 @@
 
 
 @section('page-title', 'Dashboard')
-@section('home-page', 'home')
+@section('home-page', 'Home')
 @section('sub-page', 'Dashboard')
 
 @section('content')

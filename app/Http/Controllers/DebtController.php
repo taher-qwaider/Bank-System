@@ -21,7 +21,8 @@ class DebtController extends Controller
     public function index(Request $request)
     {
         //
-        $debts = Debt::with(['user_debt', 'currency'])->paginate();
+
+        $debts = $request->user('user')->debts()->with(['user_debt', 'currency'])->paginate();
         return response()->view('cms.debits.index', ['debts' => $debts]);
     }
 
@@ -46,16 +47,12 @@ class DebtController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // $request->validate([
-        //     'vsdfvz', 'digits:value|max:value'
-        // ]);
         $validator = Validator($request->all(), [
             'debt_user_id' => 'required|numeric|exists:debt_users,id',
             'currency_id' => 'required|numeric|exists:currencies,id',
             'image'=>'required|image|mimes:png,jpg,jpeg|max:2048',
             'total' => 'required|numeric',
-            'remain' => 'required|max:'.$request->get('total'),
+            'remain' => 'required|numeric|max:'.$request->get('total'),
             'date' => 'required',
             'debt_type' => 'required|in:Creditor,Debtor',
             'payment_type' => 'required|in:single,multi',

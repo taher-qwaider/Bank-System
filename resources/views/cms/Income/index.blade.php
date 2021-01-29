@@ -1,16 +1,17 @@
 @extends('cms.parent')
-@section('title', 'Debts')
+@section('title', 'Incomes')
 
 
-@section('page-title', 'Debts')
+@section('page-title', $income_type->name . ' Incomes')
 @section('home-page', 'home')
-@section('sub-page', 'Debt')
+@section('sub-page', 'Incomes')
 @section('styles')
      <!-- Toastr -->
      <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
 @endsection
 
 @section('content')
+{{-- {{ dd($incomes) }} --}}
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -19,7 +20,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Debts</h3>
+                  <h3 class="card-title">{{ $income_type->name  }} Incomes</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -37,36 +38,29 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>User Debt</th>
-                        <th>Currency</th>
                         <th>Total</th>
-                        <th>Remain</th>
-                        <th>Debt Type</th>
-                        <th>Payment Type</th>
-                        <th>Description</th>
                         <th>Date</th>
+                        <th>Income Type Name</th>
+                        <th>Created_at</th>
+                        <th>Updated_at</th>
                         <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($debts as $debt)
+                        @foreach($income_type->incomes as $income)
                         <tr>
-                            {{-- {{ dd($debt) }} --}}
-                            <td>{{ $debt->id }}</td>
-                            <td>{{ $debt->user_debt->full_name }}</td>
-                            <td><span class="badge bg-primary bg-purple color-palette" >{{ $debt->currency->name }}</span></td>
-                            <td><span class="badge bg-info" >{{ $debt->total }}</span></td>
-                            <td><span class="badge bg-info" >{{ $debt->remain }}</span></td>
-                            <td><span class="badge bg-success" >{{ $debt->debt_type }}</span></td>
-                            <td><a href="{{ route('debt.payments.index', $debt->id) }}" class="badge bg-success" >{{ $debt->payment_type }}</a></td>
-                            <td>{{ $debt->description }}</td>
-                            <td>{{ $debt->date  }}</td>
+                            <td>{{ $income->id }}</td>
+                            <td><span class="badge bg-info">{{ $income->total }}</span></td>
+                            <td>{{ $income->date }}</td>
+                            <td>{{ $income_type->name }}</td>
+                            <td>{{ $income->created_at->format('Y-m-d') }}</td>
+                            <td>{{ $income->updated_at->format('Y-m-d') }}</td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('debts.edit', $debt->id) }}" class="btn btn-info">
+                                <a href="{{ route('income_type.income.edit', [$income_type->id, $income->id]) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>&nbsp;
-                                <a href="#" onclick="preformedDelete({{ $debt->id }}, this)" class="btn btn-danger">
+                                <a href="#" onclick="preformedDelete({{ $income_type->id }}, {{ $income->id }}, this)" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i> Delete
                                 </a>
                                 </div>
@@ -77,7 +71,8 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $debts->links() }}
+                    <a href="{{ route('income_type.income.create', $income_type->id) }}" class="btn btn-success">Create Income</a>
+                        {{-- {{ $income_types->links() }} --}}
                 </div>
               </div>
               <!-- /.card -->
@@ -93,10 +88,10 @@
     <!-- Toastr -->
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
-        function preformedDelete(id, refernce){
-            showAlert(id, refernce);
+        function preformedDelete(income_type_id, income_id, refernce){
+            showAlert(income_type_id, income_id, refernce);
         }
-        function showAlert(id, refernce){
+        function showAlert(income_type_id, income_id, refernce){
             Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -107,12 +102,12 @@
             confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    destroy(id, refernce);
+                    destroy(income_type_id, income_id, refernce);
                 }
             })
         }
-        function destroy(id, refernce){
-            axios.delete('/cms/user/debts/'+id)
+        function destroy(income_type_id, income_id, refernce){
+            axios.delete('/cms/admin/income_type/'+income_type_id + '/income/'+income_id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);

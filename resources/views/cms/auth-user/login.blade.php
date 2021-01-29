@@ -92,7 +92,7 @@
 <script src="{{ asset('cms/dist/js/adminlte.min.js') }}"></script>
 <!-- Toastr -->
 <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="{{ asset('cms/js/axios.min.js') }}"></script>
 <script>
     function performLogin(){
             axios.post('/cms/user/login', {

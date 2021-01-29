@@ -10,8 +10,10 @@ use App\Http\Controllers\CurrencyContoroller;
 use App\Http\Controllers\DebitController;
 use App\Http\Controllers\DebitUserController;
 use App\Http\Controllers\DebtController;
+use App\Http\Controllers\DebtPaymentController;
 use App\Http\Controllers\DebtUserController;
 use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\IncomeTypeController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\spatie\RoleController;
@@ -60,6 +62,7 @@ Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
     Route::resource('wallets', WalletController::class);
     Route::resource('debts', DebtController::class);
     Route::resource('debts-user', DebtUserController::class);
+    Route::resource('debt.payments', DebtPaymentController::class);
     Route::resource('users', UserController::class);
     Route::delete('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('users/{user}/forcedelete', [UserController::class, 'forceDelete'])->name('users.forcedelete');
@@ -88,6 +91,7 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
     Route::delete('admins/{admin}/forcedelete', [AdminController::class, 'forceDelete'])->name('admins.forcedelete');
     Route::resource('currency', CurrencyContoroller::class);
     Route::resource('income_type', IncomeTypeController::class);
+    Route::resource('income_type.income', IncomeController::class);
     Route::resource('expense_type', ExpenseTypeController::class);
 
 });

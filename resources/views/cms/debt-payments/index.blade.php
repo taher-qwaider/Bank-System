@@ -1,8 +1,8 @@
 @extends('cms.parent')
-@section('title', 'Debts')
+@section('title', 'Debts Payments')
 
 
-@section('page-title', 'Debts')
+@section('page-title', 'Debts Payments')
 @section('home-page', 'home')
 @section('sub-page', 'Debt')
 @section('styles')
@@ -19,7 +19,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Debts</h3>
+                  <h3 class="card-title">Debts Payments</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -37,36 +37,27 @@
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>User Debt</th>
-                        <th>Currency</th>
-                        <th>Total</th>
+                        <th>Amount</th>
                         <th>Remain</th>
-                        <th>Debt Type</th>
-                        <th>Payment Type</th>
-                        <th>Description</th>
                         <th>Date</th>
+                        <th>Status</th>
                         <th>Stings</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($debts as $debt)
+                        @foreach($debt_payments as $debt_payment)
                         <tr>
-                            {{-- {{ dd($debt) }} --}}
-                            <td>{{ $debt->id }}</td>
-                            <td>{{ $debt->user_debt->full_name }}</td>
-                            <td><span class="badge bg-primary bg-purple color-palette" >{{ $debt->currency->name }}</span></td>
-                            <td><span class="badge bg-info" >{{ $debt->total }}</span></td>
-                            <td><span class="badge bg-info" >{{ $debt->remain }}</span></td>
-                            <td><span class="badge bg-success" >{{ $debt->debt_type }}</span></td>
-                            <td><a href="{{ route('debt.payments.index', $debt->id) }}" class="badge bg-success" >{{ $debt->payment_type }}</a></td>
-                            <td>{{ $debt->description }}</td>
-                            <td>{{ $debt->date  }}</td>
+                            <td>{{ $debt_payment->id }}</td>
+                            <td>{{ $debt_payment->amount }}</td>
+                            <td>{{ $debt_payment->remain }}</td>
+                            <td>{{ $debt_payment->payment_date }}</td>
+                            <td><span class="badge bg-info" >{{ $debt_payment->status }}</span></td>
                             <td>
                                 <div class="btn-group">
-                                <a href="{{ route('debts.edit', $debt->id) }}" class="btn btn-info">
+                                <a href="{{ route('debt.payments.edit', [$debt_id, $debt_payment->id]) }}" class="btn btn-info">
                                     <i class="fas fa-edit"></i> Edit
                                 </a>&nbsp;
-                                <a href="#" onclick="preformedDelete({{ $debt->id }}, this)" class="btn btn-danger">
+                                <a href="#" onclick="preformedDelete({{ $debt_id }}, {{ $debt_payment->id }}, this)" class="btn btn-danger">
                                     <i class="fas fa-trash-alt"></i> Delete
                                 </a>
                                 </div>
@@ -77,7 +68,8 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $debts->links() }}
+                    <a href="{{ route('debt.payments.create', $debt_id) }}" class="btn btn-success">Create Debt Payment</a>
+                    {{-- {{ $debt_payments->links() }} --}}
                 </div>
               </div>
               <!-- /.card -->
@@ -93,10 +85,10 @@
     <!-- Toastr -->
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
-        function preformedDelete(id, refernce){
-            showAlert(id, refernce);
+        function preformedDelete(debt_id, payment_id, refernce){
+            showAlert(debt_id, payment_id, refernce);
         }
-        function showAlert(id, refernce){
+        function showAlert(debt_id, payment_id, refernce){
             Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -107,20 +99,18 @@
             confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    destroy(id, refernce);
+                    destroy(debt_id, payment_id, refernce);
                 }
             })
         }
-        function destroy(id, refernce){
-            axios.delete('/cms/user/debts/'+id)
+        function destroy(debt_id, payment_id, refernce){
+            axios.delete('/cms/user/debt/'+debt_id+'/payments/'+payment_id)
             .then(function (response) {
-                // handle success
                 console.log(response.data);
                 refernce.closest('tr').remove();
                 responsAlert(response.data, true);
             })
             .catch(function (error) {
-                // handle error
                 console.log(error.response.data);
                 responsAlert(error.response.data, false);
             })

@@ -1,7 +1,7 @@
 @extends('cms.parent')
-@section('title', 'Edit Income')
+@section('title', 'Create Income')
 
-@section('page-title', 'Edit Income')
+@section('page-title', 'Create Income')
 @section('home-page', 'Home')
 @section('sub-page', 'Income')
 
@@ -22,33 +22,42 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Edit Income</h3>
+              <h3 class="card-title">Create Income</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form id="edit_income">
+            <form id="create_income">
                 @csrf
               <div class="card-body">
                 <div class="form-group">
                 <label for="total">Total :</label>
-                <input type="number" class="form-control" id="total" value="{{ $income->total }}">
+                <input type="number" class="form-control" id="total" placeholder="Enter Total">
                 </div>
                 <div class="form-group">
                     <label>Currency:</label>
                     <select class="form-control currencies" id="currency" style="width: 100%;">
                         @foreach ($currencies as $currency)
-                            <option value="{{ $currency->id }}" @if($income->currency_id == $currency->id) selected @endif>{{ $currency->name }}</option>
+                            <option value="{{ $currency->id }}">{{ $currency->name }}</option>
                         @endforeach
                     </select>
                   </div>
                 <div class="form-group">
                     <label for="date">Date :</label>
-                    <input type="date" class="form-control" id="date" value="{{ $income->date }}">
+                    <input type="date" class="form-control" id="date" placeholder="Enter Date">
                 </div>
+                <div class="form-group">
+                    <label for="image">Image</label>
+                    <div class="input-group">
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="image" id="image">
+                        <label class="custom-file-label" for="image">Choose Image</label>
+                      </div>
+                    </div>
+                  </div>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <button type="button" onclick="performSave({{ $income_type_id }}, {{ $income_id }})" class="btn btn-primary">Save</button>
+                <button type="button" onclick="performSave({{ $income_type_id }})" class="btn btn-primary">Save</button>
               </div>
             </form>
           </div>
@@ -73,18 +82,19 @@
         });
     </script>
     <script>
-        function performSave(income_type_id, income_id){
-            axios.put('/cms/admin/income_type/'+income_type_id+'/income/'+income_id ,{
-                income_type_id:income_type_id,
-                total:document.getElementById('total').value,
-                currency_id:document.getElementById('currency').value,
-                date:document.getElementById('date').value,
-            }
+        function performSave(id){
+            var formData=new FormData();
+            formData.append('income_type_id', id);
+            formData.append('total', document.getElementById('total').value);
+            formData.append('currency_id', document.getElementById('currency').value);
+            formData.append('image', document.getElementById('image').files[0]);
+            formData.append('date', document.getElementById('date').value);
+            axios.post('/cms/admin/income_type/'+id+'/income' ,formData
             )
             .then(function (response) {
                 console.log(response);
                 showConfirm(response.data.message, true);
-                location.href = '{{ route('income_type.income.index', $income_type_id) }}'
+                document.getElementById('create_income').reset();
             })
             .catch(function (error) {
                 console.log(error);

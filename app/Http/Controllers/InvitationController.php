@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\FinancialOperation;
+use App\Models\Invitation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
-class FinancialOperationController extends Controller
+class InvitationController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,10 +16,9 @@ class FinancialOperationController extends Controller
     public function index(Request $request)
     {
         //
-        $operations = FinancialOperation::where('source_id', '==', $request->user('user')->id, 'or')
-                                            ->where('destination_id', '==', $request->user('user')->id, 'or')->get();
-        return response()->view('cms.financialOperation.index', [
-            'operations' => $operations
+        $invitations = $request->user('user')->reciveInvitations()->with('sendUser')->get();
+        return response()->view('cms.friend', [
+            'invitations' => $invitations,
         ]);
     }
 
@@ -30,9 +30,6 @@ class FinancialOperationController extends Controller
     public function create()
     {
         //
-        return response()->view('cms.financialOperation.create', [
-
-        ]);
     }
 
     /**
@@ -66,6 +63,8 @@ class FinancialOperationController extends Controller
     public function edit($id)
     {
         //
+
+
     }
 
     /**
@@ -78,6 +77,17 @@ class FinancialOperationController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validator = Validator($request->all(), [
+            'status' => 'required|in:Accepted,Rejected'
+        ]);
+        if(!$validator->fails()){
+            $invitation = Invitation::findOrFail($id);
+            $invitation->status = $request->get('status');
+            $isSaved = $invitation->save();
+            return response()->json(['message' => $isSaved ? 'invitation Updated successfully' : 'Failed to Update invitation'], $isSaved ? 200 : 400);
+        }else{
+            return response()->json(['message' => $validator->getMessageBag()->first()], 400);
+        }
     }
 
     /**

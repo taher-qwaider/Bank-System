@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Auth;
 use App\Helpers\FileUpload;
 use App\Http\Controllers\Controller;
 use App\Models\City;
+use App\Models\Invitation;
 use App\Models\Profession;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -104,5 +106,27 @@ class UserAuthController extends Controller
             return response()->json(['message' => $validator->getMessageBag()->first()], 400);
         }
 
+    }
+    public function inviate(){
+        return response()->view('cms.inviate');
+    }
+    public function sendInvietation(Request $request){
+        $validator = validator($request->all(), [
+            'email' => 'required|email|exists:users,email',
+            'message' => 'required|string|min:3'
+        ]);
+        if(!$validator->fails()){
+            $sender_id = $request->user('user')->id;
+            $resever_id = User::where('email', $request->get('email'))->first()->id;
+            $inviate =new Invitation();
+            $inviate->sender_user_id = $sender_id;
+            $inviate->receiver_user_id = $resever_id;
+            $inviate->message =$request->get('message');
+            $inviate->status = 'Waiting';
+            $isSaved = $inviate->save();
+            return response()->json(['message' => $isSaved ? 'Inviatetion send successfully' : 'Failed to send Inviatetion'], $isSaved ? 200 : 400);
+        }else{
+            return response()->json(['message' => $validator->getMessageBag()->first()], 400);
+        }
     }
 }

@@ -60,10 +60,15 @@ class PermissionSeeder extends Seeder
         // Permission::create(['name'=>'Updata-Debits', 'guard_name'=>'user']);
         // Permission::create(['name'=>'Delete-Debits', 'guard_name'=>'user']);
 
-        Permission::create(['name'=>'Create-Debt-User', 'guard_name'=>'admin']);
-        Permission::create(['name'=>'Read-Debt-User', 'guard_name'=>'admin']);
-        Permission::create(['name'=>'Updata-Debt-User', 'guard_name'=>'admin']);
-        Permission::create(['name'=>'Delete-Debt-User', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Create-Debt-User', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Read-Debt-User', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Updata-Debt-User', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Delete-Debt-User', 'guard_name'=>'user']);
+
+        Permission::create(['name'=>'Create-Financial-Operation', 'guard_name'=>'user']);
+        Permission::create(['name'=>'Read-Financial-Operation', 'guard_name'=>'user']);
+        Permission::create(['name'=>'Updata-Financial-Operation', 'guard_name'=>'user']);
+        Permission::create(['name'=>'Delete-Financial-Operation', 'guard_name'=>'user']);
 
         // Permission::create(['name'=>'Create-', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Read-', 'guard_name'=>'admin']);

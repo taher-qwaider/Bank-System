@@ -52,7 +52,7 @@
                   </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <button type="button" onclick="performSave({{ $debt_id, $payment_id }})" class="btn btn-primary">Save</button>
+                <button type="button" onclick="performSave({{ $debt_id}},{{ $payment_id }})" class="btn btn-primary">Save</button>
               </div>
             </form>
           </div>

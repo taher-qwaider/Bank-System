@@ -7,14 +7,14 @@ use App\Http\Controllers\spatie\AdminRoleController;
 use App\Http\Controllers\Auth\UserAuthController;
 use App\Http\Controllers\CityController;
 use App\Http\Controllers\CurrencyContoroller;
-use App\Http\Controllers\DebitController;
-use App\Http\Controllers\DebitUserController;
 use App\Http\Controllers\DebtController;
 use App\Http\Controllers\DebtPaymentController;
 use App\Http\Controllers\DebtUserController;
 use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\FinancialOperationController;
 use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\IncomeTypeController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfessionController;
 use App\Http\Controllers\spatie\RoleController;
 use Illuminate\Support\Facades\Route;
@@ -25,6 +25,7 @@ use App\Http\Controllers\spatie\UserPermissionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use App\Models\User;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,12 +65,17 @@ Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
     Route::resource('debts-user', DebtUserController::class);
     Route::resource('debt.payments', DebtPaymentController::class);
     Route::resource('users', UserController::class);
+    Route::resource('invitation', InvitationController::class);
     Route::delete('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('users/{user}/forcedelete', [UserController::class, 'forceDelete'])->name('users.forcedelete');
     Route::get('logout', [UserAuthController::class,'logout'])->name('user.logout');
 
+    Route::view('inviate', 'cms/inviate')->name('inviate');
     Route::get('edit-profile', [UserAuthController::class, 'edit_profile'])->name('user.edit-profile');
     Route::post('updata-profile', [UserAuthController::class, 'updata_profile'])->name('user.updata-profile');
+
+    Route::get('inviate', [UserAuthController::class, 'inviate'])->name('inviate');
+    Route::post('inviate', [UserAuthController::class, 'sendInvietation'])->name('inviate');
 
     Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('user.edit-password');
     Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('user.updata-password');
@@ -81,7 +87,7 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
     Route::get('dashboard', function(){
         $users_count = User::count();
         return response()->view('cms.dashboard', [
-            'users_count' => $users_count
+            'users_count' => $users_count,
         ]);
     })->name('dashboard');
     Route::resource('cities', CityController::class);
@@ -90,6 +96,7 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
     Route::delete('admins/{admin}/restore', [AdminController::class, 'restore'])->name('admins.restore');
     Route::delete('admins/{admin}/forcedelete', [AdminController::class, 'forceDelete'])->name('admins.forcedelete');
     Route::resource('currency', CurrencyContoroller::class);
+    Route::resource('financialOperation', FinancialOperationController::class);
     Route::resource('income_type', IncomeTypeController::class);
     Route::resource('income_type.income', IncomeController::class);
     Route::resource('expense_type', ExpenseTypeController::class);

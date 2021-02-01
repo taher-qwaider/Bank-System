@@ -17,4 +17,10 @@ class SubUser extends Model
         else
             return "Female";
     }
+    public function mainUser(){
+        return $this->belongsTo(User::class, 'main_user_id', 'id');
+    }
+    public function subUser(){
+        return $this->belongsTo(User::class, 'sub_user_id', 'id');
+    }
 }

@@ -22,7 +22,7 @@ class CreateFinancialOperationsTable extends Migration
             $table->float('amount');
             $table->boolean('verified');
             $table->string('verification_code', 45);
-            $table->date('data');
+            $table->date('date');
             $table->time('time');
 
             $table->foreignId('currency_id');

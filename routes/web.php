@@ -22,6 +22,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\spatie\PermissionController;
 use App\Http\Controllers\spatie\RolePermissiomController;
 use App\Http\Controllers\spatie\UserPermissionController;
+use App\Http\Controllers\SubUserController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
 use App\Models\User;
@@ -65,17 +66,17 @@ Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
     Route::resource('debts-user', DebtUserController::class);
     Route::resource('debt.payments', DebtPaymentController::class);
     Route::resource('users', UserController::class);
+    Route::resource('sub-users', SubUserController::class);
     Route::resource('invitation', InvitationController::class);
     Route::delete('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
     Route::delete('users/{user}/forcedelete', [UserController::class, 'forceDelete'])->name('users.forcedelete');
     Route::get('logout', [UserAuthController::class,'logout'])->name('user.logout');
 
-    Route::view('inviate', 'cms/inviate')->name('inviate');
     Route::get('edit-profile', [UserAuthController::class, 'edit_profile'])->name('user.edit-profile');
     Route::post('updata-profile', [UserAuthController::class, 'updata_profile'])->name('user.updata-profile');
 
-    Route::get('inviate', [UserAuthController::class, 'inviate'])->name('inviate');
-    Route::post('inviate', [UserAuthController::class, 'sendInvietation'])->name('inviate');
+    Route::get('users/{user}/roles', [AdminRoleController::class, 'index'])->name('user.role.index');
+    Route::post('users/{user}/roles', [AdminRoleController::class, 'store']);
 
     Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('user.edit-password');
     Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('user.updata-password');

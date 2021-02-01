@@ -40,26 +40,27 @@
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>Permessions</th>
                         <th>Guard</th>
                         <th>Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                        @foreach($permissions as $permission)
+                        @foreach($roles as $role)
                         <tr>
-                            <td>{{ $permission->id }}</td>
-                            <td>{{ $permission->name }}</td>
+                            <td>{{ $role->id }}</td>
+                            <td>{{ $role->name }}</td>
                             <td>
-                                <span class="badge bg-info">{{ $permission->guard_name }}</span>
+                                <a href="{{ route('Role.Permissions.index', $role->id) }}" class="btn btn-info">{{ $role->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
+                            </td>
+                            <td>
+                                <span class="badge bg-info">{{ $role->guard_name }}</span>
                             </td>
                             <td>
                                 <div class="icheck-success d-inline">
-                                    <input type="checkbox" id="permission_{{ $permission->id }}" onclick="store({{ $roleId }}, {{ $permission->id }})"
-                                    @if($permission->active)
-                                    checked
-                                    @endif
-                                    >
-                                    <label for="permission_{{ $permission->id }}">
+                                    <input type="checkbox" id="role_{{ $role->id }}" onclick="store({{ $userId }}, {{ $role->id }})"
+                                    @if($role->active) checked @endif>
+                                    <label for="role_{{ $role->id }}">
                                     </label>
                                 </div>
                             </td>
@@ -70,7 +71,6 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                    {{ $permissions->links() }}
                 </div>
               </div>
               <!-- /.card -->
@@ -86,9 +86,10 @@
          <!-- Toastr -->
         <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
-        function store(id, permission_id){
-            axios.post('/cms/admin/Role/'+id+'/Permissions', {
-                permission_id:permission_id,
+        function store(id, role_id){
+            axios.post('/cms/user/users/'+id+'/roles', {
+                role_id:role_id,
+                // active:document.getElementById
             })
             .then(function (response) {
                 // handle success

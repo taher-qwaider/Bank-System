@@ -43,6 +43,7 @@
                         <th>Profession</th>
                         <th>gender</th>
                         <th>Permissions</th>
+                        <th>Roles</th>
                         <th>City</th>
                         <th>Is Deleted</th>
                         <th>Created_at</th>
@@ -61,6 +62,9 @@
                             <td><span class="badge bg-success">{{ $user->gender_status }}</span></td>
                             <td>
                                 <a href="{{ route('user.permission.index', $user->id) }}" class="btn btn-info">{{ $user->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
+                            </td>
+                            <td>
+                                <a href="{{ route('user.role.index', $user->id) }}" class="btn btn-info">{{ $user->roles_count }} / Roles <i class="fas fa-user-tie"></i></a>
                             </td>
                             <td>{{ $user->city->name }}</td>
                             <td>

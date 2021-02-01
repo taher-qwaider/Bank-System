@@ -79,6 +79,7 @@ class AdminController extends Controller
             $isSaved = $admin->save();
             if($isSaved){
                 // Mail::to($admin)->queue(new AdminWellcomeEmail($admin));
+                $admin->assignRole('admin');
                 event(new Registered($admin));
             }
             return response()->json(['message' => $isSaved ? 'Admin created successfully' : 'Failed to create admin'], $isSaved ? 201 : 400);

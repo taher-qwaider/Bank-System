@@ -19,4 +19,7 @@ class DebtUsers extends Model
             return 'Female';
         }
     }
+    public function debt(){
+        return $this->hasMany(Debt::class, 'debt_user_id', 'id');
+    }
 }

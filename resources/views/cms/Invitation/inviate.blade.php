@@ -51,7 +51,7 @@
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
   <script>
       function inviate(){
-        axios.post('/cms/user/inviate',{
+        axios.post('/cms/user/invitation',{
             email:document.getElementById('email').value,
             message:document.getElementById('message').value,
         })

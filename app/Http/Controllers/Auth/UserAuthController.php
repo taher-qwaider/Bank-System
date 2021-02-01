@@ -92,13 +92,11 @@ class UserAuthController extends Controller
             $user->gender = $request->get('gender');
             $user->profession_id=$request->get('profession_id');
             if ($request->hasFile('image')) {
-                $isDeleted = Storage::disk('public')->delete($user->image);
-                if ($isDeleted) {
-                    $this->uploadFile($request->file('image'), 'images/users/', 'public', 'user_'. $user->first_name. '_' . time());
-                    $user->image = $this->filePath;
-                }else{
-                    return response()->json(['message' => 'Failed to Upload image'], 400);
+                if ($user->image) {
+                    $isDeleted = Storage::disk('public')->delete($user->image);
                 }
+                $this->uploadFile($request->file('image'), 'images/users/', 'public', 'user_'. $user->first_name. '_' . time());
+                $user->image = $this->filePath;
             }
             $isSaved = $user->save();
             return response()->json(['message' => $isSaved ? 'User Profile Updated successfully' : 'Failed to Updatad User Profile'], $isSaved ? 200 : 400);
@@ -107,26 +105,5 @@ class UserAuthController extends Controller
         }
 
     }
-    public function inviate(){
-        return response()->view('cms.inviate');
-    }
-    public function sendInvietation(Request $request){
-        $validator = validator($request->all(), [
-            'email' => 'required|email|exists:users,email',
-            'message' => 'required|string|min:3'
-        ]);
-        if(!$validator->fails()){
-            $sender_id = $request->user('user')->id;
-            $resever_id = User::where('email', $request->get('email'))->first()->id;
-            $inviate =new Invitation();
-            $inviate->sender_user_id = $sender_id;
-            $inviate->receiver_user_id = $resever_id;
-            $inviate->message =$request->get('message');
-            $inviate->status = 'Waiting';
-            $isSaved = $inviate->save();
-            return response()->json(['message' => $isSaved ? 'Inviatetion send successfully' : 'Failed to send Inviatetion'], $isSaved ? 200 : 400);
-        }else{
-            return response()->json(['message' => $validator->getMessageBag()->first()], 400);
-        }
-    }
+
 }

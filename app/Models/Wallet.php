@@ -14,7 +14,7 @@ class Wallet extends Model
         else
             return 'inActive';
     }
-    public function wallets(){
+    public function user(){
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
     public function currency(){

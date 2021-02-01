@@ -1,7 +1,7 @@
 @extends('cms.parent')
-@section('title', 'Create User')
+@section('title', 'Create Sub User')
 
-@section('page-title', 'User')
+@section('page-title', 'Sub User')
 @section('home-page', 'Home')
 @section('sub-page', 'User')
 
@@ -22,7 +22,7 @@
           <!-- general form elements -->
           <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Create User</h3>
+              <h3 class="card-title">Create Sub User</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
@@ -64,6 +64,10 @@
                 <div class="form-group">
                     <label for="id_number">ID Number :</label>
                     <input type="number" class="form-control" id="id_number"  placeholder="Enter ID Number">
+                </div>
+                <div class="form-group">
+                    <label for="birth_date">Date Of Birth :</label>
+                    <input type="date" class="form-control" id="birth_date"  placeholder="Enter Your Birth Date">
                 </div>
                 <div class="col-sm-6">
                     <!-- radio -->
@@ -120,9 +124,10 @@
             formData.append('city_id', document.getElementById('city').value);
             formData.append('id_number', document.getElementById('id_number').value);
             formData.append('profession_id', document.getElementById('profession').value);
+            formData.append('birth_date', document.getElementById('birth_date').value);
             formData.append('gender', document.getElementById('male').checked ? 'M':'F');
 
-        axios.post('/cms/user/users' ,formData
+        axios.post('/cms/user/sub-users' ,formData
         )
         .then(function (response) {
             console.log(response);

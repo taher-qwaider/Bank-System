@@ -17,7 +17,7 @@ class AdminPermissionController extends Controller
     public function index($adminId)
     {
         //
-        $permissions=Permission::where('guard_name', 'admin')->paginate();
+        $permissions=Permission::where('guard_name', 'admin')->paginate(15);
         $admin =Admin::findOrFail($adminId);
 
         if($admin->permissions->count() > 0){

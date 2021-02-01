@@ -45,6 +45,11 @@ class PermissionSeeder extends Seeder
         // Permission::create(['name'=>'Updata-Income_Type', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Delete-Income_Type', 'guard_name'=>'admin']);
 
+        // Permission::create(['name'=>'Create-Income', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Read-Income', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Updata-Income', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Delete-Income', 'guard_name'=>'admin']);
+
         // Permission::create(['name'=>'Create-Expense_Type', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Read-Expense_Type', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Updata-Expense_Type', 'guard_name'=>'admin']);
@@ -65,10 +70,30 @@ class PermissionSeeder extends Seeder
         // Permission::create(['name'=>'Updata-Debt-User', 'guard_name'=>'user']);
         // Permission::create(['name'=>'Delete-Debt-User', 'guard_name'=>'user']);
 
-        Permission::create(['name'=>'Create-Financial-Operation', 'guard_name'=>'user']);
-        Permission::create(['name'=>'Read-Financial-Operation', 'guard_name'=>'user']);
-        Permission::create(['name'=>'Updata-Financial-Operation', 'guard_name'=>'user']);
-        Permission::create(['name'=>'Delete-Financial-Operation', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Create-Debt-Payment', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Read-Debt-Payment', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Updata-Debt-Payment', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Delete-Debt-Payment', 'guard_name'=>'user']);
+
+        // Permission::create(['name'=>'Create-Financial-Operation', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Read-Financial-Operation', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Updata-Financial-Operation', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Delete-Financial-Operation', 'guard_name'=>'user']);
+
+        // Permission::create(['name'=>'Create-Sub-User', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Read-Sub-User', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Updata-Sub-User', 'guard_name'=>'user']);
+        // Permission::create(['name'=>'Delete-Sub-User', 'guard_name'=>'user']);
+
+        // Permission::create(['name'=>'Create-Permission', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Read-Permission', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Updata-Permission', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Delete-Permission', 'guard_name'=>'admin']);
+
+        // Permission::create(['name'=>'Create-Role', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Read-Role', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Updata-Role', 'guard_name'=>'admin']);
+        // Permission::create(['name'=>'Delete-Role', 'guard_name'=>'admin']);
 
         // Permission::create(['name'=>'Create-', 'guard_name'=>'admin']);
         // Permission::create(['name'=>'Read-', 'guard_name'=>'admin']);

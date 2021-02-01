@@ -160,75 +160,106 @@
               </li>
             </ul>
           </li>
-          <li class="nav-item">
-            <a href="{{ route('inviate') }}" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
-              <p>
-                Inviate a Friend
-                <span class="right badge badge-danger">New</span>
-              </p>
-            </a>
-          </li>
-          @canany(['Read-Admin', 'Create-Admin', 'Read-User', 'Create-User'])
-          <li class="nav-header">Humarn Resources</li>
-          @canany(['Read-Admin', 'Create-Admin'])
-            <li class="nav-item has-treeview">
-                <a href="#" class="nav-link">
-                    <i class="nav-icon fas fa-user-tie"></i>
+          @if (Auth::guard('user')->check())
+            <li class="nav-item">
+                <a href="{{ route('invitation.create') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
                 <p>
-                    Admins
-                    <i class="fas fa-angle-left right"></i>
+                    Inviate a Friend
+                    <span class="right badge badge-danger">New</span>
                 </p>
                 </a>
-                <ul class="nav nav-treeview">
-                @can('Read-Admin')
-                    <li class="nav-item">
-                        <a href="{{ route('admins.index') }}" class="nav-link">
-                            <i class="fas fa-list nav-icon"></i>
-                        <p>Index</p>
-                        </a>
-                    </li>
-                @endcan
-                @can('Create-Admin')
-                    <li class="nav-item">
-                        <a href="{{ route('admins.create') }}" class="nav-link">
-                        <i class="fas fa-plus nav-icon"></i>
-                        <p>Create</p>
-                        </a>
-                    </li>
-                @endcan
-                </ul>
             </li>
-          @endcanany
-          @canany(['Read-User', 'Create-User'])
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>
-                Users
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-            @can('Read-User')
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        <i class="fas fa-list nav-icon"></i>
-                    <p>Index</p>
+          @endif
+          @canany(['Read-Admin', 'Create-Admin', 'Read-User', 'Create-User', 'Read-Sub-User', 'Create-Sub-User'])
+            <li class="nav-header">Humarn Resources</li>
+            @canany(['Read-Admin', 'Create-Admin'])
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-user-tie"></i>
+                    <p>
+                        Admins
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                    @can('Read-Admin')
+                        <li class="nav-item">
+                            <a href="{{ route('admins.index') }}" class="nav-link">
+                                <i class="fas fa-list nav-icon"></i>
+                            <p>Index</p>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('Create-Admin')
+                        <li class="nav-item">
+                            <a href="{{ route('admins.create') }}" class="nav-link">
+                            <i class="fas fa-plus nav-icon"></i>
+                            <p>Create</p>
+                            </a>
+                        </li>
+                    @endcan
+                    </ul>
                 </li>
-            @endcan
-            @can('Create-User')
-                <li class="nav-item">
-                    <a href="{{ route('users.create') }}" class="nav-link">
-                    <i class="fas fa-plus nav-icon"></i>
-                    <p>Create</p>
+            @endcanany
+            @canany(['Read-User', 'Create-User'])
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-user"></i>
+                    <p>
+                        Users
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
                     </a>
+                    <ul class="nav nav-treeview">
+                    @can('Read-User')
+                        <li class="nav-item">
+                            <a href="{{ route('users.index') }}" class="nav-link">
+                                <i class="fas fa-list nav-icon"></i>
+                            <p>Index</p>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('Create-User')
+                        <li class="nav-item">
+                            <a href="{{ route('users.create') }}" class="nav-link">
+                            <i class="fas fa-plus nav-icon"></i>
+                            <p>Create</p>
+                            </a>
+                        </li>
+                    @endcan
+                    </ul>
                 </li>
-            @endcan
-            </ul>
-          </li>
-          @endcanany
+            @endcanany
+            @canany(['Read-Sub-User', 'Create-Sub-User'])
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                    <i class="nav-icon fas fa-user-plus"></i>
+                    <p>
+                        Sub Users
+                        <i class="fas fa-angle-left right"></i>
+                    </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                    @can('Read-Sub-User')
+                        <li class="nav-item">
+                            <a href="{{ route('sub-users.index') }}" class="nav-link">
+                                <i class="fas fa-list nav-icon"></i>
+                            <p>Index</p>
+                            </a>
+                        </li>
+                    @endcan
+                    @can('Create-Sub-User')
+                        <li class="nav-item">
+                            <a href="{{ route('sub-users.create') }}" class="nav-link">
+                            <i class="fas fa-plus nav-icon"></i>
+                            <p>Create</p>
+                            </a>
+                        </li>
+                    @endcan
+                    </ul>
+                </li>
+            @endcanany
           @endcanany
           @canany(['Read-Cities', 'Create-Cities', 'Read-Profission', 'Create-Profission'])
           <li class="nav-header">Content Mangement</li>
@@ -495,55 +526,67 @@
                 </ul>
             </li>
           @endcanany
-
+        @canany(['Read-Permission', 'Create-Permission', 'Read-Role', 'Create-Role'])
           <li class="nav-header">Roles & Permessions</li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-pencil-ruler"></i>
-              <p>
-                Roles
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('roles.index') }}" class="nav-link">
-                    <i class="fas fa-list nav-icon"></i>
-                  <p>Index</p>
+          @canany(['Read-Permission', 'Create-Permission'])
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-pencil-ruler"></i>
+                <p>
+                    Roles
+                    <i class="fas fa-angle-left right"></i>
+                </p>
                 </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('roles.create') }}" class="nav-link">
-                  <i class="fas fa-plus nav-icon"></i>
-                  <p>Create</p>
+                <ul class="nav nav-treeview">
+                @can('Read-Permission')
+                    <li class="nav-item">
+                        <a href="{{ route('roles.index') }}" class="nav-link">
+                            <i class="fas fa-list nav-icon"></i>
+                        <p>Index</p>
+                        </a>
+                    </li>
+                @endcan
+                @can('Read-Permission')
+                    <li class="nav-item">
+                        <a href="{{ route('roles.create') }}" class="nav-link">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Create</p>
+                        </a>
+                    </li>
+                @endcan
+                </ul>
+            </li>
+          @endcanany
+          @canany(['Read-Role', 'Create-Role'])
+            <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fas fa-user-tie"></i>
+                <p>
+                    Permessions
+                    <i class="fas fa-angle-left right"></i>
+                </p>
                 </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-user-tie"></i>
-              <p>
-                Permessions
-                <i class="fas fa-angle-left right"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{ route('premissions.index') }}" class="nav-link">
-                  <i class="fas fa-list nav-icon"></i>
-                  <p>Index</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{ route('premissions.create') }}" class="nav-link">
-                 <i class="fas fa-plus nav-icon"></i>
-                  <p>Create</p>
-                </a>
-              </li>
-            </ul>
-          </li>
+                <ul class="nav nav-treeview">
+                @can('Read-Role')
+                    <li class="nav-item">
+                        <a href="{{ route('premissions.index') }}" class="nav-link">
+                        <i class="fas fa-list nav-icon"></i>
+                        <p>Index</p>
+                        </a>
+                    </li>
+                @endcan
+                @can('Create-Role')
+                    <li class="nav-item">
+                        <a href="{{ route('premissions.create') }}" class="nav-link">
+                        <i class="fas fa-plus nav-icon"></i>
+                        <p>Create</p>
+                        </a>
+                    </li>
+                @endcan
+                </ul>
+            </li>
+          @endcanany
+        @endcanany
           <li class="nav-header">Settings</li>
           <li class="nav-item">
             @if (Auth::guard('admin')->check())

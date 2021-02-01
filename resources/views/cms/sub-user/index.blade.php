@@ -9,7 +9,6 @@
      <!-- Toastr -->
      <link rel="stylesheet" href="{{ asset('cms/plugins/toastr/toastr.min.css') }}">
 @endsection
-
 @section('content')
     <!-- Main content -->
     <section class="content">
@@ -38,13 +37,11 @@
                       <tr>
                         <th>ID</th>
                         <th>Name</th>
-                        <th>email</th>
+                        <th>Email</th>
                         <th>mobile</th>
-                        <th>Profession</th>
+                        <th>Id Number</th>
                         <th>gender</th>
-                        <th>Permissions</th>
-                        <th>City</th>
-                        <th>Is Deleted</th>
+                        <th>Date Of Birth</th>
                         <th>Created_at</th>
                         <th>Updated_at</th>
                         <th>Stings</th>
@@ -54,35 +51,22 @@
                         @foreach($sub_users as $sub_user)
                         <tr>
                             <td>{{ $sub_user->id }}</td>
-                            <td>{{ $sub_user->full_name }}</td>
-                            <td>{{ $sub_user->email }}</td>
-                            <td>{{ $sub_user->mobile }}</td>
-                            <td>{{ $sub_user->profession->name }}</td>
-                            <td><span class="badge bg-success">{{ $sub_user->gender_status }}</span></td>
-                            <td>
-                                <a href="{{ route('user.permission.index', $sub_user->id) }}" class="btn btn-info">{{ $sub_user->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
-                            </td>
-                            <td>{{ $sub_user->city->name }}</td>
-                            <td>
-                                <span @if($sub_user->trashed())  class="badge bg-danger"  @else  class="badge bg-success" @endif>{{ $sub_user->trashed() ? 'true': 'false' }}</span>
-                            </td>
-                            <td>{{ $sub_user->created_at }}</td>
-                            <td>{{ $sub_user->updated_at }}</td>
+                            <td>{{ $sub_user->subUser->full_name }}</td>
+                            <td>{{ $sub_user->subUser->email }}</td>
+                            <td>{{ $sub_user->subUser->mobile }}</td>
+                            <td>{{ $sub_user->subUser->id_number }}</td>
+                            <td><span class="badge bg-success">{{ $sub_user->subUser->gender_status }}</span></td>
+                            <td>{{ $sub_user->subUser->birth_date }}</td>
+                            <td>{{ $sub_user->subUser->created_at }}</td>
+                            <td>{{ $sub_user->subUser->updated_at }}</td>
                             <td>
                                 <div class="btn-group">
-                                    <a href="{{ route('users.edit', $sub_user->id) }}" class="btn btn-info">
+                                    <a href="{{ route('sub-users.edit', $sub_user->id) }}" class="btn btn-info">
                                         <i class="fas fa-edit"></i> Edit
                                     </a>&nbsp;
-                                    @if ((Auth::user('user')->id != $user->id) && (!$sub_user->trashed()))
-                                        <a href="#" onclick="preformedDelete({{ $user->id }})" class="btn btn-danger">
-                                            <i class="fas fa-trash-alt"></i> Delete
-                                        </a>
-                                    @endif
-                                    @if ((Auth::user('user')->id != $user->id) && ($user->trashed()))
-                                        <a href="#" onclick="restore({{ $user->id }})" class="btn btn-primary">
-                                            <i class="fas fa-recycle"></i> Restore
-                                        </a>
-                                    @endif
+                                    <a href="#" onclick="preformedDelete({{ $sub_user->id }}, this)" class="btn btn-danger">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </a>
                                 </div>
                             </td>
                           @endforeach
@@ -91,7 +75,7 @@
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer clearfix">
-                        {{ $sub_users->links() }}
+                        {{-- {{ $sub_users->links() }} --}}
                 </div>
               </div>
               <!-- /.card -->
@@ -107,10 +91,10 @@
     <!-- Toastr -->
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
-        function preformedDelete(id){
-            showAlert(id);
+        function preformedDelete(id, reference){
+            showAlert(id, reference);
         }
-        function showAlert(id){
+        function showAlert(id, reference){
             Swal.fire({
             title: 'Are you sure?',
             text: "You won't be able to revert this!",
@@ -121,25 +105,15 @@
             confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    destroy(id);
+                    destroy(id, reference);
                 }
             })
         }
-        function restore(id){
-            axios.delete('/cms/user/users/'+id+'/restore')
+        function destroy(id, reference){
+            axios.delete('/cms/user/sub-users/'+id)
             .then(function (response) {
                 console.log(response.data);
-                responsAlert(response.data, true);
-            })
-            .catch(function (error) {
-                console.log(error.response.data);
-                responsAlert(error.response.data, false);
-            })
-        }
-        function destroy(id){
-            axios.delete('/cms/user/users/'+id)
-            .then(function (response) {
-                console.log(response.data);
+                reference.closest('tr').remove();
                 responsAlert(response.data, true);
             })
             .catch(function (error) {

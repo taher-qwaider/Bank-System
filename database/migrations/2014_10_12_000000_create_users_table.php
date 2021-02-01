@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
             $table->enum('gender', ['M', 'F']);
             $table->string('id_number', 15);
             $table->boolean('has_control');
-            $table->date('birth_data')->nullable();
+            $table->date('birth_date')->nullable();
             $table->string('address')->nullable();
             $table->enum('status', ['active', 'inctive', 'Freezed']);
             $table->string('password')->nullable();

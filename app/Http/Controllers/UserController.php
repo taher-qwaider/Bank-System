@@ -21,8 +21,10 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users=User::withCount('permissions')->withTrashed()->with(['city', 'profession'])->paginate(10);
-        return response()->view('cms.User.index', ['users'=>$users]);
+        $users=User::withCount(['permissions', 'Roles'])->withTrashed()->with(['city', 'profession'])->paginate(10);
+        return response()->view('cms.User.index', [
+            'users'=>$users
+        ]);
     }
 
     /**
@@ -72,6 +74,7 @@ class UserController extends Controller
             $user->has_control = false;
             $isSaved = $user->save();
             if($isSaved){
+                $user->assignRole('user');
                 event(new Registered($user));
             }
             return response()->json(['message' => $isSaved ? 'User created successfully' : 'Failed to create User'], $isSaved ? 201 : 400);
@@ -103,13 +106,11 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $cities=City::where('active', true)->get();
         $professions=Profession::where('active', true)->get();
-        return response()->view('cms.User.edit',
-        [
+        return response()->view('cms.User.edit', [
             'cities'=>$cities,
              'professions'=>$professions,
               'user'=>$user
-        ]
-        );
+        ]);
     }
 
     /**

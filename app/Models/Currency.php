@@ -18,4 +18,13 @@ class Currency extends Model
     public function wallets(){
         return $this->hasMany(Wallet::class, 'currency_id', 'id');
     }
+    public function financialOperations(){
+        return $this->hasMany(FinancialOperation::class, 'currency_id', 'id');
+    }
+    public function incomes(){
+        return $this->hasMany(Income::class, 'currency_id', 'id');
+    }
+    public function debts(){
+        return $this->hasMany(Debt::class, 'currency_id', 'id');
+    }
 }

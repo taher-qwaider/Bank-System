@@ -5,7 +5,7 @@ namespace App\Http\Controllers\spatie;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Spatie\Permission\Contracts\Role;
+use Spatie\Permission\Models\Role;
 
 class UserRoleController extends Controller
 {
@@ -23,7 +23,7 @@ class UserRoleController extends Controller
         if($user->roles->count() >0){
             foreach($roles as $role){
                 $role->setAttribute('active', false);
-                if($user->hasRole($role)){
+                if($user->hasRole($role->name)){
                     $role->setAttribute('active', true);
                 }
             }

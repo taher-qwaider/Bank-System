@@ -130,7 +130,7 @@
             })
         }
         function restore(id){
-            axios.delete('/cms/user/users/'+id+'/restore')
+            axios.delete('/cms/admin/users/'+id+'/restore')
             .then(function (response) {
                 console.log(response.data);
                 responsAlert(response.data, true);
@@ -141,7 +141,7 @@
             })
         }
         function destroy(id){
-            axios.delete('/cms/user/users/'+id)
+            axios.delete('/cms/admin/users/'+id)
             .then(function (response) {
                 console.log(response.data);
                 responsAlert(response.data, true);

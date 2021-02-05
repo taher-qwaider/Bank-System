@@ -22,6 +22,7 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use App\Http\Controllers\spatie\PermissionController;
 use App\Http\Controllers\spatie\RolePermissiomController;
 use App\Http\Controllers\spatie\UserPermissionController;
+use App\Http\Controllers\spatie\UserRoleController;
 use App\Http\Controllers\SubUserController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
@@ -38,6 +39,8 @@ use Illuminate\Http\Request;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+// Routes access by Admin
 Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
     Route::resource('roles', RoleController::class);
     Route::resource('premissions', PermissionController::class);
@@ -58,31 +61,46 @@ Route::prefix('cms/admin')->middleware('auth:admin')->group(function(){
 
     Route::get('edit-profile', [AdminAuthController::class, 'edit_profile'])->name('edit-profile');
     Route::post('updata-profile', [AdminAuthController::class, 'updata_profile'])->name('updata-profile');
+
+    Route::resource('users', UserController::class);
+    Route::delete('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+    Route::delete('users/{user}/forcedelete', [UserController::class, 'forceDelete'])->name('users.forcedelete');
+
+    Route::get('users/{user}/roles', [UserRoleController::class, 'index'])->name('user.role.index');
+    Route::post('users/{user}/roles', [UserRoleController::class, 'store']);
+
+    Route::resource('cities', CityController::class);
+    Route::resource('Profession', ProfessionController::class);
+    Route::resource('admins', AdminController::class);
+    Route::delete('admins/{admin}/restore', [AdminController::class, 'restore'])->name('admins.restore');
+    Route::delete('admins/{admin}/forcedelete', [AdminController::class, 'forceDelete'])->name('admins.forcedelete');
+    Route::resource('currency', CurrencyContoroller::class);
 });
 
-Route::prefix('cms/user')->middleware('auth:user,admin')->group(function(){
+
+// Routes access by User
+Route::prefix('cms/user')->middleware('auth:user')->group(function(){
     Route::resource('wallets', WalletController::class);
     Route::resource('debts', DebtController::class);
     Route::resource('debts-user', DebtUserController::class);
     Route::resource('debt.payments', DebtPaymentController::class);
-    Route::resource('users', UserController::class);
     Route::resource('sub-users', SubUserController::class);
     Route::resource('invitation', InvitationController::class);
-    Route::delete('users/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
-    Route::delete('users/{user}/forcedelete', [UserController::class, 'forceDelete'])->name('users.forcedelete');
+
+    Route::resource('income_type', IncomeTypeController::class);
+    Route::resource('income_type.income', IncomeController::class);
+    Route::resource('expense_type', ExpenseTypeController::class);
+
     Route::get('logout', [UserAuthController::class,'logout'])->name('user.logout');
 
     Route::get('edit-profile', [UserAuthController::class, 'edit_profile'])->name('user.edit-profile');
     Route::post('updata-profile', [UserAuthController::class, 'updata_profile'])->name('user.updata-profile');
 
-    Route::get('users/{user}/roles', [AdminRoleController::class, 'index'])->name('user.role.index');
-    Route::post('users/{user}/roles', [AdminRoleController::class, 'store']);
-
     Route::get('edit-password', [AdminAuthController::class, 'edit_password'])->name('user.edit-password');
     Route::put('updata-password', [AdminAuthController::class, 'updata_password'])->name('user.updata-password');
 });
 
-
+// Routes access by User and Admin
 Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(function(){
 
     Route::get('dashboard', function(){
@@ -91,16 +109,9 @@ Route::prefix('cms/admin')->middleware('auth:admin,user', 'verified')->group(fun
             'users_count' => $users_count,
         ]);
     })->name('dashboard');
-    Route::resource('cities', CityController::class);
-    Route::resource('Profession', ProfessionController::class);
-    Route::resource('admins', AdminController::class);
-    Route::delete('admins/{admin}/restore', [AdminController::class, 'restore'])->name('admins.restore');
-    Route::delete('admins/{admin}/forcedelete', [AdminController::class, 'forceDelete'])->name('admins.forcedelete');
-    Route::resource('currency', CurrencyContoroller::class);
+
     Route::resource('financialOperation', FinancialOperationController::class);
-    Route::resource('income_type', IncomeTypeController::class);
-    Route::resource('income_type.income', IncomeController::class);
-    Route::resource('expense_type', ExpenseTypeController::class);
+
 
 });
 
@@ -116,13 +127,15 @@ Route::prefix('cms/user')->middleware('guest:user')->group(function(){
 
 // Email Verification
 Route::get('/email/verify', function(){
-    // return view('auth.verify-email');
-    return "Go and verify your email";
-})->middleware('auth:admin')->name('verification.notice');
+    return view('cms.lockscreen');
+})->middleware('auth:admin,user')->name('verification.notice');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
 
     return redirect()->route('dashboard');
-})->middleware(['auth:admin', 'signed'])->name('verification.verify');
+})->middleware(['auth:admin,user', 'signed'])->name('verification.verify');
 
+Route::fallback(function(){
+    return view('cms.404');
+});

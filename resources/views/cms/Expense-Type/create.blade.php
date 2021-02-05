@@ -61,7 +61,7 @@
     <script>
         function performSave(){
 
-        axios.post('/cms/admin/expense_type' ,{
+        axios.post('/cms/user/expense_type' ,{
             name:document.getElementById('name').value,
             details:document.getElementById('details').value,
             active:document.getElementById('active').checked,

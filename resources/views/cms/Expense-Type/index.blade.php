@@ -105,7 +105,7 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/admin/expense_type/'+id)
+            axios.delete('/cms/user/expense_type/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);

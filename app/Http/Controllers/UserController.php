@@ -21,7 +21,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        $users=User::withCount(['permissions', 'Roles'])->withTrashed()->with(['city', 'profession'])->paginate(10);
+        $users=User::withCount(['permissions', 'roles'])->withTrashed()->with(['city', 'profession'])->paginate(10);
         return response()->view('cms.User.index', [
             'users'=>$users
         ]);

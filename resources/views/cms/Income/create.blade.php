@@ -89,7 +89,7 @@
             formData.append('currency_id', document.getElementById('currency').value);
             formData.append('image', document.getElementById('image').files[0]);
             formData.append('date', document.getElementById('date').value);
-            axios.post('/cms/admin/income_type/'+id+'/income' ,formData
+            axios.post('/cms/user/income_type/'+id+'/income' ,formData
             )
             .then(function (response) {
                 console.log(response);

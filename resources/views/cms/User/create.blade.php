@@ -122,7 +122,7 @@
             formData.append('profession_id', document.getElementById('profession').value);
             formData.append('gender', document.getElementById('male').checked ? 'M':'F');
 
-        axios.post('/cms/user/users' ,formData
+        axios.post('/cms/admin/users' ,formData
         )
         .then(function (response) {
             console.log(response);

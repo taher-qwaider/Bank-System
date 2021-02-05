@@ -59,7 +59,7 @@
     <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
         function performupdata(id){
-            axios.put('/cms/admin/expense_type/'+id , {
+            axios.put('/cms/user/expense_type/'+id , {
             name: document.getElementById('name').value,
             details: document.getElementById('details').value,
             active: document.getElementById('active').checked,

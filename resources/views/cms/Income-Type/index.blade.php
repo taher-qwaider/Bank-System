@@ -107,7 +107,7 @@
             })
         }
         function destroy(id, refernce){
-            axios.delete('/cms/admin/income_type/'+id)
+            axios.delete('/cms/user/income_type/'+id)
             .then(function (response) {
                 // handle success
                 console.log(response.data);

@@ -74,7 +74,7 @@
     </script>
     <script>
         function performSave(income_type_id, income_id){
-            axios.put('/cms/admin/income_type/'+income_type_id+'/income/'+income_id ,{
+            axios.put('/cms/user/income_type/'+income_type_id+'/income/'+income_id ,{
                 income_type_id:income_type_id,
                 total:document.getElementById('total').value,
                 currency_id:document.getElementById('currency').value,

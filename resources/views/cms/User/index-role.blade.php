@@ -1,10 +1,10 @@
 @extends('cms.parent')
-@section('title', 'Permissions')
+@section('title', 'User Roles')
 
 
-@section('page-title', 'Permissions')
-@section('home-page', 'home')
-@section('sub-page', 'Permissions')
+@section('page-title', 'User Roles')
+@section('home-page', 'Home')
+@section('sub-page', 'Roles')
 @section('styles')
     <!-- iCheck for checkboxes and radio inputs -->
   <link rel="stylesheet" href="{{ asset('cms/plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
@@ -21,7 +21,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <h3 class="card-title">Permissions</h3>
+                  <h3 class="card-title">Roles</h3>
 
                   <div class="card-tools">
                     <div class="input-group input-group-sm" style="width: 150px;">
@@ -47,25 +47,25 @@
                     </thead>
                     <tbody>
                         @foreach($roles as $role)
-                        <tr>
-                            <td>{{ $role->id }}</td>
-                            <td>{{ $role->name }}</td>
-                            <td>
-                                <a href="{{ route('Role.Permissions.index', $role->id) }}" class="btn btn-info">{{ $role->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
-                            </td>
-                            <td>
-                                <span class="badge bg-info">{{ $role->guard_name }}</span>
-                            </td>
-                            <td>
-                                <div class="icheck-success d-inline">
-                                    <input type="checkbox" id="role_{{ $role->id }}" onclick="store({{ $userId }}, {{ $role->id }})"
-                                    @if($role->active) checked @endif>
-                                    <label for="role_{{ $role->id }}">
-                                    </label>
-                                </div>
-                            </td>
-                        </tr>
-                          @endforeach
+                            <tr>
+                                <td>{{ $role->id }}</td>
+                                <td>{{ $role->name }}</td>
+                                <td>
+                                    <a href="{{ route('Role.Permissions.index', $role->id) }}" class="btn btn-info">{{ $role->permissions_count }} / Permessions <i class="fas fa-user-tie"></i></a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">{{ $role->guard_name }}</span>
+                                </td>
+                                <td>
+                                    <div class="icheck-success d-inline">
+                                        <input type="checkbox" id="role_{{ $role->id }}" onclick="store({{ $userId }}, {{ $role->id }})"
+                                        @if($role->active) checked @endif>
+                                        <label for="role_{{ $role->id }}">
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                   </table>
                 </div>
@@ -87,7 +87,7 @@
         <script src="{{ asset('cms/plugins/toastr/toastr.min.js') }}"></script>
     <script>
         function store(id, role_id){
-            axios.post('/cms/user/users/'+id+'/roles', {
+            axios.post('/cms/admin/users/'+id+'/roles', {
                 role_id:role_id,
                 // active:document.getElementById
             })
